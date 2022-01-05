@@ -6,7 +6,8 @@ import net.javaguides.springboot.model.MedicalEvent;
 
 public interface MedicalEventService {
 
-	public MedicalEvent saveMedicalEvent(MedicalEvent medicalEvent);
+	public MedicalEvent saveMedicalEvent(MedicalEvent medicalEvent, long accountId, long specialityId,
+			long institutionId);
 
 	public List<MedicalEvent> getAllMedialEvents();
 

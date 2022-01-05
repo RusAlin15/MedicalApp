@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import net.javaguides.springboot.model.speciality.Speciality;
+import net.javaguides.springboot.model.Speciality;
 import net.javaguides.springboot.repository.SpecialityRepository;
 import net.javaguides.springboot.service.SpecialityService;
 

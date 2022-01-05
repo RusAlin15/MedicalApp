@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+//@JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "FieldHandler" })
 @Entity
 @Data
 @Table(name = "institutions")
@@ -31,7 +32,7 @@ public class Institution {
 //	@Column(name = "location", nullable = false)
 //	private Location location; 
 
-	@Column(name = "webSite", nullable = false)
+	@Column(name = "webSite")
 	private String webSite;
 
 	public String getName() {

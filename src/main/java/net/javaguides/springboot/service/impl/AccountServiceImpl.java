@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 
 import net.javaguides.springboot.exception.ResourceNotFoundException;
 import net.javaguides.springboot.model.Account;
-import net.javaguides.springboot.model.validator.CnpValidator;
 import net.javaguides.springboot.repository.AccountRepository;
 import net.javaguides.springboot.service.AccountService;
+import net.javaguides.springboot.validator.CnpValidator;
 
 @Service
 public class AccountServiceImpl implements AccountService {

@@ -25,9 +25,13 @@ public class MedicalEventController {
 	}
 
 	// build create MedicalEvent REST API
-	@PostMapping
-	public ResponseEntity<MedicalEvent> saveMedialEvent(@RequestBody MedicalEvent medicalEvent) {
-		return new ResponseEntity<MedicalEvent>(medicalEventService.saveMedicalEvent(medicalEvent), HttpStatus.CREATED);
+	@PostMapping("/{accountId}/{specialityId}/{institutionId}")
+	public ResponseEntity<MedicalEvent> saveMedicalEvent(@RequestBody MedicalEvent medicalEvent,
+			@PathVariable("accountId") long accountId, @PathVariable("specialityId") long specialityId,
+			@PathVariable("institutionId") long institutionId) {
+		return new ResponseEntity<MedicalEvent>(
+				medicalEventService.saveMedicalEvent(medicalEvent, accountId, specialityId, institutionId),
+				HttpStatus.CREATED);
 	}
 
 	// build all accounts REST API

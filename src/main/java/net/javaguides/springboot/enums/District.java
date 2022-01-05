@@ -1,4 +1,4 @@
-package net.javaguides.springboot.model.enums;
+package net.javaguides.springboot.enums;
 
 public enum District {
 	Alba, Arad, Argeș, Bacău, Bihor, Bistrița_Năsăud, Botoșani, Brașov, Brăila, Buzău, Caraș_Severin, Cluj, Constanța,

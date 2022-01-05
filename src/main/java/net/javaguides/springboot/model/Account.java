@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
-import net.javaguides.springboot.model.enums.Gender;
+import net.javaguides.springboot.enums.Gender;
 
 @Data
 @Entity

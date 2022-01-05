@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.javaguides.springboot.model.Account;
 import net.javaguides.springboot.service.AccountService;
-import net.javaguides.springboot.service.MedicalEventService;
 
 @RestController
 @RequestMapping("/api/account")
@@ -24,13 +23,13 @@ public class AccountController {
 
 	private AccountService accountService;
 
-	public AccountController(AccountService accountService, MedicalEventService medicalEventService) {
+	public AccountController(AccountService accountService) {
 		super();
 		this.accountService = accountService;
 	}
 
 	// build create account REST API
-	@PostMapping
+	@PostMapping()
 	public ResponseEntity<Account> saveAccount(@RequestBody Account account) {
 		return new ResponseEntity<Account>(accountService.saveAccount(account), HttpStatus.CREATED);
 	}

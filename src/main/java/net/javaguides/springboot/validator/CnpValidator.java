@@ -1,13 +1,13 @@
-package net.javaguides.springboot.model.validator;
+package net.javaguides.springboot.validator;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import net.javaguides.springboot.enums.District;
+import net.javaguides.springboot.enums.Gender;
 import net.javaguides.springboot.exception.InvalidDataException;
-import net.javaguides.springboot.model.enums.District;
-import net.javaguides.springboot.model.enums.Gender;
 
 /**
  * Returns if the given string represents a valid CNP for the given birthdate.

@@ -2,21 +2,21 @@ package net.javaguides.springboot.model;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
-import net.javaguides.springboot.model.speciality.Speciality;
 
 @Data
 @Entity
@@ -53,16 +53,16 @@ public class MedicalEvent {
 	@Column(name = "event_date", nullable = false)
 	private LocalDate eventDate;
 
-	@Transient
-	private Long accountId;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "institution_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private Institution institution;
 
-//	@Column(name = "medical_institution", nullable = false)
-//	private MedicalInstitution institution;
-//
-
-	@OneToOne(targetEntity = Speciality.class, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "speciality_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Speciality speciality;
-//
+
 //	@Column(name = "status", nullable = false)
 //	private Status status;
 //
@@ -164,8 +164,20 @@ public class MedicalEvent {
 		return id;
 	}
 
-	public Long getAccountId() {
-		return accountId;
+	public Speciality getSpeciality() {
+		return speciality;
+	}
+
+	public void setSpeciality(Speciality speciality) {
+		this.speciality = speciality;
+	}
+
+	public void setInstitution(Institution institution) {
+		this.institution = institution;
+	}
+
+	public Institution getInstitution() {
+		return institution;
 	}
 
 }

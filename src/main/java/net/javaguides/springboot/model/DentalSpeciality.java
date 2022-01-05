@@ -1,4 +1,4 @@
-package net.javaguides.springboot.model.speciality;
+package net.javaguides.springboot.model;
 
 import javax.persistence.Entity;
 
