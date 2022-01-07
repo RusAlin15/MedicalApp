@@ -12,4 +12,6 @@ public interface DiagnosticService {
 
 	void deleteAllDiagnostics();
 
+	Diagnostic saveDiagnostic(Diagnostic diagnostic, String diagnosticId);
+
 }

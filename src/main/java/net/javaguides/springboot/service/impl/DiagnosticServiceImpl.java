@@ -6,30 +6,29 @@ import org.springframework.stereotype.Service;
 
 import net.javaguides.springboot.exception.ResourceNotFoundException;
 import net.javaguides.springboot.model.Diagnostic;
-import net.javaguides.springboot.model.MorbidityCode;
 import net.javaguides.springboot.repository.DiagnosticRepository;
-import net.javaguides.springboot.repository.MorbidityCodeRepository;
 import net.javaguides.springboot.service.DiagnosticService;
 
 @Service
 public class DiagnosticServiceImpl implements DiagnosticService {
 	DiagnosticRepository diagnosticRepository;
-	MorbidityCodeRepository morbidityCodeRepository;
 
-	public DiagnosticServiceImpl(DiagnosticRepository diagnosticRepository,
-			MorbidityCodeRepository morbidityCodeRepository) {
+	public DiagnosticServiceImpl(DiagnosticRepository diagnosticRepository) {
 		super();
 		this.diagnosticRepository = diagnosticRepository;
-		this.morbidityCodeRepository = morbidityCodeRepository;
 	}
 
 	@Override
 	public Diagnostic saveDiagnostic(Diagnostic diagnostic) {
-		Long id = diagnostic.getMorbidityCodeId();
-		MorbidityCode morbidityCode = morbidityCodeRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("MorbidityCode", "Id", id));
+		diagnostic.setFinalDiagnostic(false);
+		return diagnosticRepository.save(diagnostic);
+	}
 
-		morbidityCode.addDiagnostic(diagnostic);
+	@Override
+	public Diagnostic saveDiagnostic(Diagnostic diagnostic, String diagnosticId) {
+		Diagnostic diagnosticCap = diagnosticRepository.findById(diagnosticId)
+				.orElseThrow(() -> new ResourceNotFoundException("Diagnostic", "Id", diagnosticId));
+		diagnosticCap.subDiagnostics(diagnostic);
 		return diagnosticRepository.save(diagnostic);
 	}
 

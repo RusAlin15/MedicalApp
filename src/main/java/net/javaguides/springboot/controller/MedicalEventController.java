@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,24 +25,42 @@ public class MedicalEventController {
 		this.medicalEventService = medicalEventService;
 	}
 
-	// build create MedicalEvent REST API
-	@PostMapping("/{accountId}/{specialityId}/{institutionId}")
-	public ResponseEntity<MedicalEvent> saveMedicalEvent(@RequestBody MedicalEvent medicalEvent,
-			@PathVariable("accountId") long accountId, @PathVariable("specialityId") long specialityId,
-			@PathVariable("institutionId") long institutionId) {
-		return new ResponseEntity<MedicalEvent>(
-				medicalEventService.saveMedicalEvent(medicalEvent, accountId, specialityId, institutionId),
-				HttpStatus.CREATED);
+	@PostMapping()
+	public ResponseEntity<MedicalEvent> saveMedicalEvent(@RequestBody MedicalEvent medicalEvent) {
+		return new ResponseEntity<MedicalEvent>(medicalEventService.saveMedicalEvent(medicalEvent), HttpStatus.CREATED);
 	}
 
-	// build all accounts REST API
+	@PutMapping("institution/{eventId}/{institutionId}")
+	public ResponseEntity<MedicalEvent> setInstitution(@PathVariable("eventId") long eventId,
+			@PathVariable("institutionId") long institutionId) {
+		return new ResponseEntity<MedicalEvent>(medicalEventService.setInstitution(eventId, institutionId),
+				HttpStatus.OK);
+	}
+
+	@PutMapping("speciality/{eventId}/{specialityId}")
+	public ResponseEntity<MedicalEvent> setSpeciality(@PathVariable("eventId") long eventId,
+			@PathVariable("specialityId") long specialityId) {
+		return new ResponseEntity<MedicalEvent>(medicalEventService.setSpeciality(eventId, specialityId),
+				HttpStatus.OK);
+	}
+
+	@PutMapping("stage/{eventId}/{stageId}")
+	public ResponseEntity<MedicalEvent> setStage(@PathVariable("eventId") long eventId,
+			@PathVariable("stageId") long stageId) {
+		return new ResponseEntity<MedicalEvent>(medicalEventService.setStage(eventId, stageId), HttpStatus.OK);
+	}
+
+	@PutMapping("doctor/{eventId}/{doctorId}")
+	public ResponseEntity<MedicalEvent> setDoctor(@PathVariable("eventId") long eventId,
+			@PathVariable("doctorId") long doctorId) {
+		return new ResponseEntity<MedicalEvent>(medicalEventService.setDoctor(eventId, doctorId), HttpStatus.OK);
+	}
+
 	@GetMapping
 	public List<MedicalEvent> getAllMedialEvents() {
 		return medicalEventService.getAllMedialEvents();
 	}
 
-	// build specific account with specific ID
-	// http://localhost:8070/api/account/1
 	@GetMapping("{id}")
 	public ResponseEntity<MedicalEvent> getMedicalEventById(@PathVariable("id") long id) {
 		return new ResponseEntity<MedicalEvent>(medicalEventService.getMedicalEventById(id), HttpStatus.OK);

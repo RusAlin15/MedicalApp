@@ -12,7 +12,7 @@ import lombok.Data;
 //@JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "FieldHandler" })
 @Entity
 @Data
-@Table(name = "institutions")
+@Table(name = "institution")
 public class Institution {
 
 	@Id

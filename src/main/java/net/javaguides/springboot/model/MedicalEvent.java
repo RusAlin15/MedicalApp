@@ -1,7 +1,9 @@
 package net.javaguides.springboot.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,7 +24,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "medical_events")
+@Table(name = "medical_event")
 public class MedicalEvent {
 
 	@Id
@@ -65,36 +69,40 @@ public class MedicalEvent {
 
 //	@Column(name = "status", nullable = false)
 //	private Status status;
-//
-//	@Column(name = "appoitments", nullable = false)
-//	private Appointment[] appoitments;
-//
-//	@Column(name = "diagnose", nullable = false)
-//	private Diagnose diagnose;
-//
-//	@Column(name = "stage", nullable = false)
-//	private Stage stage;
-//
+
+	@ManyToOne(targetEntity = Diagnostic.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "diagnostic_id_fk", referencedColumnName = "icd_code")
+	private List<Diagnostic> diagnostics;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "stage_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private Stage stage;
+
 //	@Column(name = "events", nullable = false)
 //	private Events[] relatedMedicalEvents;
-//
-//	@Column(name = "recomandation_ticket", nullable = false)
-//	private RecomandationTicket recomandationTicket;
-//
-//	@Column(name = "recipe", nullable = false)
-//	private Recipe recipe;
-//
-//	@Column(name = "screening_results", nullable = false)
-//	private ScreeningResults screeningResults;
-//
-//	@Column(name = "labs_results", nullable = false)
-//	private LabsResults labsResults;
-//
-//	@Column(name = "doctor", nullable = false)
-//	private Doctor doctor;
-//
-//	@Column(name = "event_report", nullable = false)
-//	private File eventReport;
+
+	@OneToMany(targetEntity = ReferralTicket.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "referal_id_fk")
+	private List<ReferralTicket> referralTickets;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "recipe_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private Recipe recipe;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "doctor_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private Doctor doctor;
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
 
 	public String getTitle() {
 		return title;
@@ -122,6 +130,14 @@ public class MedicalEvent {
 
 	public String getPresumtiveDiagnosis() {
 		return presumtiveDiagnosis;
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 
 	public void setPresumtiveDiagnosis(String presumtiveDiagnosis) {
