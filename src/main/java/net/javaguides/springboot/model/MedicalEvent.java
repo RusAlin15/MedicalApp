@@ -1,6 +1,7 @@
 package net.javaguides.springboot.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -32,9 +34,6 @@ public class MedicalEvent {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "title", nullable = false)
-	private String title;
-
 	@Column(name = "sympthoms", nullable = false)
 	private String sympthoms;
 
@@ -53,11 +52,25 @@ public class MedicalEvent {
 	@Column(name = "recomanded_treatment")
 	private String recomandedTreatment;
 
+	@ManyToMany(targetEntity = Diagnostic.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "diagnostic_icd_fk", referencedColumnName = "icd_code")
+	private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "disease_status_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private DiseaseStatus deseaseStatus;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "medical_event_status_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private MedicalEventStatus medicalEventStatus;
+
 	@DateTimeFormat(pattern = "YYYY-MM-DD")
 	@Column(name = "event_date", nullable = false)
 	private LocalDate eventDate;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "institution_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Institution institution;
@@ -66,21 +79,6 @@ public class MedicalEvent {
 	@JoinColumn(name = "speciality_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Speciality speciality;
-
-//	@Column(name = "status", nullable = false)
-//	private Status status;
-
-	@ManyToOne(targetEntity = Diagnostic.class, cascade = CascadeType.ALL)
-	@JoinColumn(name = "diagnostic_id_fk", referencedColumnName = "icd_code")
-	private List<Diagnostic> diagnostics;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "stage_id_fk")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private Stage stage;
-
-//	@Column(name = "events", nullable = false)
-//	private Events[] relatedMedicalEvents;
 
 	@OneToMany(targetEntity = ReferralTicket.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "referal_id_fk")
@@ -104,14 +102,6 @@ public class MedicalEvent {
 		this.doctor = doctor;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getSympthoms() {
 		return sympthoms;
 	}
@@ -130,14 +120,6 @@ public class MedicalEvent {
 
 	public String getPresumtiveDiagnosis() {
 		return presumtiveDiagnosis;
-	}
-
-	public Stage getStage() {
-		return stage;
-	}
-
-	public void setStage(Stage stage) {
-		this.stage = stage;
 	}
 
 	public void setPresumtiveDiagnosis(String presumtiveDiagnosis) {
@@ -194,6 +176,42 @@ public class MedicalEvent {
 
 	public Institution getInstitution() {
 		return institution;
+	}
+
+	public Recipe getRecipe() {
+		return recipe;
+	}
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
+	}
+
+	public List<ReferralTicket> getReferralTickets() {
+		return referralTickets;
+	}
+
+	public DiseaseStatus getDeseaseStatus() {
+		return deseaseStatus;
+	}
+
+	public void setDeseaseStatus(DiseaseStatus deseaseStatus) {
+		this.deseaseStatus = deseaseStatus;
+	}
+
+	public MedicalEventStatus getMedicalEventStatus() {
+		return medicalEventStatus;
+	}
+
+	public void setMedicalEventStatus(MedicalEventStatus medicalEventStatus) {
+		this.medicalEventStatus = medicalEventStatus;
+	}
+
+	public void addDiagnostic(Diagnostic diagnostic) {
+		this.diagnostics.add(diagnostic);
+	}
+
+	public List<Diagnostic> getDiagnostics() {
+		return diagnostics;
 	}
 
 }

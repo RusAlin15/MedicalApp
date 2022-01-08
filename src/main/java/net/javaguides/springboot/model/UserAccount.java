@@ -1,11 +1,10 @@
 package net.javaguides.springboot.model;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,11 +12,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name = "account")
+@MappedSuperclass
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "userType", defaultImpl = Object.class)
-@JsonSubTypes({ @JsonSubTypes.Type(value = Patient.class, name = "Patient") })
+@JsonSubTypes({ @JsonSubTypes.Type(value = Patient.class, name = "Patient"),
+		@JsonSubTypes.Type(value = Institution.class, name = "Institution") })
 public abstract class UserAccount {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -28,6 +28,9 @@ public abstract class UserAccount {
 
 	@Column(name = "password", nullable = false)
 	private String password;
+
+	@Column(name = "phone_number", nullable = false)
+	private String phoneNr;
 
 	public String getEmail() {
 		return email;
@@ -49,8 +52,12 @@ public abstract class UserAccount {
 		return id;
 	}
 
-	public abstract void addMedicalEvent(MedicalEvent medicalEvent);
+	public String getPhoneNr() {
+		return phoneNr;
+	}
 
-//	@Column(name = "phone_nr")
-//	private String phoneNr;
+	public void setPhoneNr(String phoneNr) {
+		this.phoneNr = phoneNr;
+	}
+
 }

@@ -2,37 +2,17 @@ package net.javaguides.springboot.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 import lombok.Data;
 
-//@JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "FieldHandler" })
 @Entity
 @Data
-@Table(name = "institution")
-public class Institution {
+public class Institution extends UserAccount {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
-
-	@Column(name = "name", nullable = false)
+	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
-	@Column(name = "email", nullable = false)
-	private String email;
-
-//	@Column(name = "phone_nr", nullable = false)
-//	private String[] phoneNr;
-
-//	@Column(name = "location", nullable = false)
-//	private Location location; 
-
-	@Column(name = "webSite")
+	@Column(name = "webSite", unique = true)
 	private String webSite;
 
 	public String getName() {
@@ -43,14 +23,6 @@ public class Institution {
 		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getWebSite() {
 		return webSite;
 	}
@@ -58,9 +30,4 @@ public class Institution {
 	public void setWebSite(String webSite) {
 		this.webSite = webSite;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
 }

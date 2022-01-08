@@ -5,29 +5,33 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import net.javaguides.springboot.exception.ResourceNotFoundException;
+import net.javaguides.springboot.model.Institution;
 import net.javaguides.springboot.model.MedicalEvent;
 import net.javaguides.springboot.model.Patient;
 import net.javaguides.springboot.model.UserAccount;
 import net.javaguides.springboot.repository.MedicalEventRepository;
+import net.javaguides.springboot.repository.PatientRepository;
 import net.javaguides.springboot.repository.userAccountRepository;
-import net.javaguides.springboot.service.userAccountService;
+import net.javaguides.springboot.service.UserAccountService;
 import net.javaguides.springboot.validator.CnpValidator;
 
 @Service
-public class UserServiceImpl implements userAccountService {
+public class UserServiceImpl implements UserAccountService {
 
 	private userAccountRepository userAccountRepository;
 	private MedicalEventRepository medicalEventRepository;
+	private PatientRepository patientRepository;
 
 	public UserServiceImpl(net.javaguides.springboot.repository.userAccountRepository userAccountRepository,
-			MedicalEventRepository medicalEventRepository) {
+			MedicalEventRepository medicalEventRepository, PatientRepository patientRepository) {
 		super();
 		this.userAccountRepository = userAccountRepository;
 		this.medicalEventRepository = medicalEventRepository;
+		this.patientRepository = patientRepository;
 	}
 
 	@Override
-	public UserAccount savePatient(Patient patient) {
+	public Patient savePatient(Patient patient) {
 		patientSeters(patient);
 		return userAccountRepository.save(patient);
 	}
@@ -55,8 +59,8 @@ public class UserServiceImpl implements userAccountService {
 	}
 
 	@Override
-	public List<UserAccount> getAllUserAccounts() {
-		return userAccountRepository.findAll();
+	public List<Patient> getAllUserAccounts() {
+		return patientRepository.findAll();
 	}
 
 //	@Override
@@ -78,15 +82,20 @@ public class UserServiceImpl implements userAccountService {
 
 	@Override
 	public UserAccount addEvent(long patientId, long eventId) {
-		UserAccount userAccount = userAccountRepository.findById(patientId)
+		Patient patient = (Patient) userAccountRepository.findById(patientId)
 				.orElseThrow(() -> new ResourceNotFoundException("Patient", "Id", patientId));
 
 		MedicalEvent medicalEvent = medicalEventRepository.findById(eventId)
 				.orElseThrow(() -> new ResourceNotFoundException("MedicalEvent", "Id", eventId));
 
-		userAccount.addMedicalEvent(medicalEvent);
-		userAccountRepository.save(userAccount);
-		return userAccount;
+		patient.addMedicalEvent(medicalEvent);
+		userAccountRepository.save(patient);
+		return patient;
+	}
+
+	@Override
+	public UserAccount saveInstitution(Institution institution) {
+		return userAccountRepository.save(institution);
 	}
 
 }

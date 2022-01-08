@@ -30,30 +30,45 @@ public class MedicalEventController {
 		return new ResponseEntity<MedicalEvent>(medicalEventService.saveMedicalEvent(medicalEvent), HttpStatus.CREATED);
 	}
 
-	@PutMapping("institution/{eventId}/{institutionId}")
+	@PutMapping("/diagnostic/{eventId}/{diagnosticIcd}")
+	public ResponseEntity<MedicalEvent> addDiagnostic(@PathVariable("eventId") long eventId,
+			@PathVariable("diagnosticIcd") String diagnosticIcd) {
+		return new ResponseEntity<MedicalEvent>(medicalEventService.addDiagnostic(eventId, diagnosticIcd),
+				HttpStatus.OK);
+	}
+
+	@PutMapping("/institution/{eventId}/{institutionId}")
 	public ResponseEntity<MedicalEvent> setInstitution(@PathVariable("eventId") long eventId,
 			@PathVariable("institutionId") long institutionId) {
 		return new ResponseEntity<MedicalEvent>(medicalEventService.setInstitution(eventId, institutionId),
 				HttpStatus.OK);
 	}
 
-	@PutMapping("speciality/{eventId}/{specialityId}")
+	@PutMapping("/speciality/{eventId}/{specialityId}")
 	public ResponseEntity<MedicalEvent> setSpeciality(@PathVariable("eventId") long eventId,
 			@PathVariable("specialityId") long specialityId) {
 		return new ResponseEntity<MedicalEvent>(medicalEventService.setSpeciality(eventId, specialityId),
 				HttpStatus.OK);
 	}
 
-	@PutMapping("stage/{eventId}/{stageId}")
-	public ResponseEntity<MedicalEvent> setStage(@PathVariable("eventId") long eventId,
-			@PathVariable("stageId") long stageId) {
-		return new ResponseEntity<MedicalEvent>(medicalEventService.setStage(eventId, stageId), HttpStatus.OK);
-	}
-
-	@PutMapping("doctor/{eventId}/{doctorId}")
+	@PutMapping("/doctor/{eventId}/{doctorId}")
 	public ResponseEntity<MedicalEvent> setDoctor(@PathVariable("eventId") long eventId,
 			@PathVariable("doctorId") long doctorId) {
 		return new ResponseEntity<MedicalEvent>(medicalEventService.setDoctor(eventId, doctorId), HttpStatus.OK);
+	}
+
+	@PutMapping("/disease/{eventId}/{diseaseStatusId}")
+	public ResponseEntity<MedicalEvent> setDiseaseStatus(@PathVariable("eventId") long eventId,
+			@PathVariable("diseaseStatusId") long diseaseStatusId) {
+		return new ResponseEntity<MedicalEvent>(medicalEventService.setDiseaseStatus(eventId, diseaseStatusId),
+				HttpStatus.OK);
+	}
+
+	@PutMapping("/status/{eventId}/{evendStatusId}")
+	public ResponseEntity<MedicalEvent> setEventStatus(@PathVariable("eventId") long eventId,
+			@PathVariable("evendStatusId") long evendStatusId) {
+		return new ResponseEntity<MedicalEvent>(medicalEventService.setEventStatus(eventId, evendStatusId),
+				HttpStatus.OK);
 	}
 
 	@GetMapping

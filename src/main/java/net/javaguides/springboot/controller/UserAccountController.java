@@ -12,25 +12,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.javaguides.springboot.model.Institution;
 import net.javaguides.springboot.model.Patient;
 import net.javaguides.springboot.model.UserAccount;
-import net.javaguides.springboot.service.userAccountService;
+import net.javaguides.springboot.service.UserAccountService;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserAccountController {
 
-	private userAccountService userAccountService;
+	private UserAccountService userAccountService;
 
-	public UserAccountController(userAccountService userAccountService) {
+	public UserAccountController(UserAccountService userAccountService) {
 		super();
 		this.userAccountService = userAccountService;
 	}
 
-	// build create patient REST API
 	@PostMapping("/patient")
-	public ResponseEntity<UserAccount> savePatient(@RequestBody Patient patient) {
-		return new ResponseEntity<UserAccount>(userAccountService.savePatient(patient), HttpStatus.CREATED);
+	public ResponseEntity<Patient> savePatient(@RequestBody Patient patient) {
+		return new ResponseEntity<Patient>(userAccountService.savePatient(patient), HttpStatus.CREATED);
+	}
+
+	@GetMapping("/patient")
+	public List<Patient> getAllUserAccounts() {
+		return userAccountService.getAllUserAccounts();
+	}
+
+	@PostMapping("/institution")
+	public ResponseEntity<UserAccount> saveInstitution(@RequestBody Institution institution) {
+		return new ResponseEntity<UserAccount>(userAccountService.saveInstitution(institution), HttpStatus.CREATED);
 	}
 
 //	// build create doctor REST API
@@ -45,11 +55,6 @@ public class UserAccountController {
 	public ResponseEntity<UserAccount> addEvent(@PathVariable("patientId") long patientId,
 			@PathVariable("eventId") long eventId) {
 		return new ResponseEntity<UserAccount>(userAccountService.addEvent(patientId, eventId), HttpStatus.OK);
-	}
-
-	@GetMapping
-	public List<UserAccount> getAllUserAccounts() {
-		return userAccountService.getAllUserAccounts();
 	}
 
 //	@Transactional

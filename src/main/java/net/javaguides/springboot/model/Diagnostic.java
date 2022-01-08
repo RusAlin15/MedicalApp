@@ -1,6 +1,7 @@
 package net.javaguides.springboot.model;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +21,7 @@ import lombok.Data;
 public class Diagnostic {
 
 	@Id
-	@Column(name = "icd_code")
+	@Column(name = "icd_code", unique = true)
 	private String icdCode;
 
 	@Column(name = "title_name", nullable = false)
@@ -33,6 +34,18 @@ public class Diagnostic {
 	@JoinColumn(name = "diagnostic_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<Diagnostic> subDiagnostics;
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Diagnostic other = (Diagnostic) obj;
+		return Objects.equals(icdCode, other.icdCode);
+	}
 
 	public boolean isFinalDiagnostic() {
 		return finalDiagnostic;
@@ -58,8 +71,8 @@ public class Diagnostic {
 		return subDiagnostics;
 	}
 
-	public void subDiagnostics(Diagnostic diagnostic) {
+	public void addSubDiagnostics(Diagnostic diagnostic) {
 		this.subDiagnostics.add(diagnostic);
-
 	}
+
 }

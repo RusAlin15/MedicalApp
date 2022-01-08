@@ -4,45 +4,51 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import net.javaguides.springboot.exception.InvalidDataException;
 import net.javaguides.springboot.exception.ResourceNotFoundException;
+import net.javaguides.springboot.model.Diagnostic;
+import net.javaguides.springboot.model.DiseaseStatus;
 import net.javaguides.springboot.model.Doctor;
 import net.javaguides.springboot.model.Institution;
 import net.javaguides.springboot.model.MedicalEvent;
+import net.javaguides.springboot.model.MedicalEventStatus;
 import net.javaguides.springboot.model.Speciality;
-import net.javaguides.springboot.model.Stage;
+import net.javaguides.springboot.model.Status;
+import net.javaguides.springboot.repository.DiagnosticRepository;
 import net.javaguides.springboot.repository.DoctorRepository;
 import net.javaguides.springboot.repository.InstitutionRepository;
 import net.javaguides.springboot.repository.MedicalEventRepository;
 import net.javaguides.springboot.repository.SpecialityRepository;
-import net.javaguides.springboot.repository.StageRepository;
-import net.javaguides.springboot.repository.userAccountRepository;
+import net.javaguides.springboot.repository.StatusRepository;
 import net.javaguides.springboot.service.MedicalEventService;
 
 @Service
 public class MedicalEventServiceImpl implements MedicalEventService {
 
 	private MedicalEventRepository medicalEventRepository;
-	private userAccountRepository userAccountRepository;
 	private SpecialityRepository specialityRepository;
 	private InstitutionRepository institutionRepository;
-	private StageRepository stageRepository;
 	private DoctorRepository doctorRepository;
+	private StatusRepository statusRepository;
+	private DiagnosticRepository diagnosticRepository;
 
 	public MedicalEventServiceImpl(MedicalEventRepository medicalEventRepository,
-			userAccountRepository userAccountRepository, SpecialityRepository specialityRepository,
-			InstitutionRepository institutionRepository, StageRepository stageRepository,
-			DoctorRepository doctorRepository) {
+			net.javaguides.springboot.repository.userAccountRepository userAccountRepository,
+			SpecialityRepository specialityRepository, InstitutionRepository institutionRepository,
+			DoctorRepository doctorRepository, StatusRepository statusRepository,
+			DiagnosticRepository diagnosticRepository) {
 		super();
 		this.medicalEventRepository = medicalEventRepository;
-		this.userAccountRepository = userAccountRepository;
 		this.specialityRepository = specialityRepository;
 		this.institutionRepository = institutionRepository;
-		this.stageRepository = stageRepository;
 		this.doctorRepository = doctorRepository;
+		this.statusRepository = statusRepository;
+		this.diagnosticRepository = diagnosticRepository;
 	}
 
 	@Override
 	public MedicalEvent saveMedicalEvent(MedicalEvent medicalEvent) {
+
 		return medicalEventRepository.save(medicalEvent);
 	}
 
@@ -67,6 +73,7 @@ public class MedicalEventServiceImpl implements MedicalEventService {
 				.orElseThrow(() -> new ResourceNotFoundException("Institution", "Id", institutionId));
 
 		medicalEvent.setInstitution(institution);
+		medicalEventRepository.save(medicalEvent);
 		return medicalEvent;
 	}
 
@@ -80,19 +87,44 @@ public class MedicalEventServiceImpl implements MedicalEventService {
 				.orElseThrow(() -> new ResourceNotFoundException("Speciality", "Id", specialityId));
 
 		medicalEvent.setSpeciality(speciality);
+		medicalEventRepository.save(medicalEvent);
 		return medicalEvent;
 	}
 
 	@Override
-	public MedicalEvent setStage(long eventId, long stageId) {
+	public MedicalEvent setDiseaseStatus(long eventId, long diseaseStatusId) {
 
 		MedicalEvent medicalEvent = medicalEventRepository.findById(eventId)
 				.orElseThrow(() -> new ResourceNotFoundException("MedicalEvent", "Id", eventId));
 
-		Stage stage = stageRepository.findById(stageId)
-				.orElseThrow(() -> new ResourceNotFoundException("Stage", "Id", stageId));
+		Status status = statusRepository.findById(diseaseStatusId)
+				.orElseThrow(() -> new ResourceNotFoundException("Status", "Id", diseaseStatusId));
 
-		medicalEvent.setStage(stage);
+		if (status instanceof DiseaseStatus) {
+			medicalEvent.setDeseaseStatus((DiseaseStatus) status);
+		} else {
+			throw new InvalidDataException("DiseaseStatus", "Id", diseaseStatusId);
+		}
+		medicalEventRepository.save(medicalEvent);
+		return medicalEvent;
+	}
+
+	@Override
+	public MedicalEvent setEventStatus(long eventId, long eventstatusId) {
+
+		MedicalEvent medicalEvent = medicalEventRepository.findById(eventId)
+				.orElseThrow(() -> new ResourceNotFoundException("MedicalEvent", "Id", eventId));
+
+		Status status = statusRepository.findById(eventstatusId)
+				.orElseThrow(() -> new ResourceNotFoundException("Status", "Id", eventstatusId));
+
+		if (status instanceof MedicalEventStatus) {
+			medicalEvent.setMedicalEventStatus((MedicalEventStatus) status);
+		} else {
+			throw new InvalidDataException("MedicalEventStatus", "Id", eventstatusId);
+		}
+
+		medicalEventRepository.save(medicalEvent);
 		return medicalEvent;
 	}
 
@@ -106,6 +138,25 @@ public class MedicalEventServiceImpl implements MedicalEventService {
 				.orElseThrow(() -> new ResourceNotFoundException("Doctor", "Id", doctorId));
 
 		medicalEvent.setDoctor(doctor);
+		medicalEventRepository.save(medicalEvent);
+		return medicalEvent;
+	}
+
+	@Override
+	public MedicalEvent addDiagnostic(long eventId, String diagnosticIcd) {
+		MedicalEvent medicalEvent = medicalEventRepository.findById(eventId)
+				.orElseThrow(() -> new ResourceNotFoundException("MedicalEvent", "Id", eventId));
+
+		Diagnostic diagnostic = diagnosticRepository.findById(diagnosticIcd)
+				.orElseThrow(() -> new ResourceNotFoundException("Diagnostic", "Id", diagnosticIcd));
+
+		if (diagnostic.isFinalDiagnostic()) {
+			System.out.println("trsre");
+			medicalEvent.addDiagnostic(diagnostic);
+		} else {
+			throw new InvalidDataException("Diagnostic", "ICD-10", diagnosticIcd);
+		}
+		medicalEventRepository.save(medicalEvent);
 		return medicalEvent;
 	}
 

@@ -96,4 +96,5 @@ public class Patient extends UserAccount {
 	public List<MedicalEvent> getMedicalEvents() {
 		return medicalEvents;
 	}
+
 }
