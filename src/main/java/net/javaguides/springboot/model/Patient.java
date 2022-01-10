@@ -6,14 +6,17 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
@@ -47,8 +50,11 @@ public class Patient {
 	private String gender;
 
 	@OneToMany(targetEntity = MedicalEvent.class, cascade = CascadeType.ALL)
-	@JoinColumn(name = "patient_id_fk", referencedColumnName = "id")
 	private List<MedicalEvent> medicalEvents;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private PatientAccount patientAccount;
 
 	public String getFirstName() {
 		return firstName;
@@ -100,6 +106,18 @@ public class Patient {
 
 	public List<MedicalEvent> getMedicalEvents() {
 		return medicalEvents;
+	}
+
+	public PatientAccount getPatientAccount() {
+		return patientAccount;
+	}
+
+	public void setPatientAccount(PatientAccount patientAccount) {
+		this.patientAccount = patientAccount;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 }

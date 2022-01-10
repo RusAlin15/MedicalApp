@@ -6,7 +6,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -33,9 +32,12 @@ public class Doctor {
 	private String cuim;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "speciality_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Speciality speciality;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private DoctorAccount doctorAccount;
 
 	public Speciality getSpeciality() {
 		return speciality;
@@ -67,6 +69,18 @@ public class Doctor {
 
 	public Long getId() {
 		return id;
+	}
+
+	public DoctorAccount getDoctorAccount() {
+		return doctorAccount;
+	}
+
+	public void setDoctorAccount(DoctorAccount doctorAccount) {
+		this.doctorAccount = doctorAccount;
+	}
+
+	public String getFirstName() {
+		return firstName;
 	}
 
 }

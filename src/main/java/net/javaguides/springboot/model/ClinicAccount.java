@@ -1,9 +1,11 @@
 package net.javaguides.springboot.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -13,9 +15,8 @@ import lombok.Data;
 @Entity
 public class ClinicAccount extends UserAccount {
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "clinic_id_fk")
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private Clinic clinic;
+	private List<DoctorAccount> doctorAccounts;
 
 }

@@ -4,11 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import net.javaguides.springboot.exception.InvalidDataException;
-import net.javaguides.springboot.exception.ResourceNotFoundException;
-import net.javaguides.springboot.model.Clinic;
+import net.javaguides.springboot.model.ClinicAccount;
+import net.javaguides.springboot.model.DoctorAccount;
 import net.javaguides.springboot.model.InstitutionAccount;
-import net.javaguides.springboot.model.Patient;
 import net.javaguides.springboot.model.PatientAccount;
 import net.javaguides.springboot.model.UserAccount;
 import net.javaguides.springboot.repository.ClinicRepository;
@@ -40,49 +38,23 @@ public class UserServiceImpl implements UserAccountService {
 	}
 
 	@Override
-	public List<UserAccount> getAllUserAccounts() {
-		return userAccountRepository.findAll();
-	}
-
-	@Override
 	public InstitutionAccount saveInstitutionAccount(InstitutionAccount institutionAccount) {
 		return userAccountRepository.save(institutionAccount);
 	}
 
 	@Override
-	public UserAccount addPatient(long accountId, long patientId) {
-		UserAccount userAccount = userAccountRepository.findById(accountId)
-				.orElseThrow(() -> new ResourceNotFoundException("UserAccount", "Id", accountId));
-
-		Patient patient = patientRepository.findById(patientId)
-				.orElseThrow(() -> new ResourceNotFoundException("Patiente", "Id", patientId));
-
-		if (userAccount.getClass() == PatientAccount.class) {
-			((PatientAccount) userAccount).setPatient(patient);
-		} else {
-			throw new InvalidDataException("Invalid", "Id", patientId);
-		}
-
-		userAccountRepository.save(userAccount);
-		return userAccount;
+	public ClinicAccount saveClinicAccount(ClinicAccount clinicAccount) {
+		return userAccountRepository.save(clinicAccount);
 	}
 
 	@Override
-	public UserAccount addClinic(long accountId, long clinicId) {
-		UserAccount userAccount = userAccountRepository.findById(accountId)
-				.orElseThrow(() -> new ResourceNotFoundException("UserAccount", "Id", accountId));
+	public DoctorAccount saveDoctorAccount(DoctorAccount doctorAccount) {
+		return userAccountRepository.save(doctorAccount);
+	}
 
-		Clinic clinic = clicicRepository.findById(clinicId)
-				.orElseThrow(() -> new ResourceNotFoundException("Institution", "Id", clinicId));
-
-		if (userAccount.getClass() == InstitutionAccount.class) {
-			((InstitutionAccount) userAccount).addClinic(clinic);
-		} else {
-			throw new InvalidDataException("Invalid", "Id", clinicId);
-		}
-
-		userAccountRepository.save(userAccount);
-		return userAccount;
+	@Override
+	public List<UserAccount> getAllUserAccounts() {
+		return userAccountRepository.findAll();
 	}
 
 }

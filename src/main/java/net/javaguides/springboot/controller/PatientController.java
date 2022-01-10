@@ -34,23 +34,21 @@ public class PatientController {
 		return new ResponseEntity<Patient>(patientService.savePatient(patient), HttpStatus.CREATED);
 	}
 
-	@GetMapping()
-	public List<Patient> getAllPatients() {
-		return patientService.getAllPatients();
+	@PutMapping("/account/{accountId}/{patientId}")
+	public ResponseEntity<Patient> addPatientAccount(@PathVariable("accountId") long accountId,
+			@PathVariable("patientId") long patientId) {
+		return new ResponseEntity<Patient>(patientService.addPatientAccount(accountId, patientId), HttpStatus.OK);
 	}
-
-//	// build create doctor REST API
-//	@PostMapping("doctor/{institutionId}/{specialityId}")
-//	public ResponseEntity<UserAccount> saveDoctor(@RequestBody Doctor doctor, @PathVariable long institutionId,
-//			@PathVariable long specialityId) {
-//		return new ResponseEntity<UserAccount>(UserAccountAccountService.saveDoctor(doctor, institutionId, specialityId),
-//				HttpStatus.CREATED);
-//	}
 
 	@PutMapping("/{patientId}/{eventId}")
 	public ResponseEntity<Patient> addEvent(@PathVariable("patientId") long patientId,
 			@PathVariable("eventId") long eventId) {
 		return new ResponseEntity<Patient>(patientService.addEvent(patientId, eventId), HttpStatus.OK);
+	}
+
+	@GetMapping()
+	public List<Patient> getAllPatients() {
+		return patientService.getAllPatients();
 	}
 
 	@Transactional

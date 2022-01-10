@@ -8,7 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,8 +18,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "clinic")
-public class Clinic {
+@Table(name = "institution")
+public class Institution {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,11 +34,11 @@ public class Clinic {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private ClinicAccount clinicAccount;
+	private InstitutionAccount institutionAccount;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private List<Doctor> doctors;
+	private List<Clinic> clinics;
 
 	public String getName() {
 		return name;
@@ -56,24 +56,24 @@ public class Clinic {
 		this.webSite = webSite;
 	}
 
+	public InstitutionAccount getInstitutionAccount() {
+		return institutionAccount;
+	}
+
+	public void setInstitutionAccount(InstitutionAccount institutionAccount) {
+		this.institutionAccount = institutionAccount;
+	}
+
+	public List<Clinic> getClinics() {
+		return clinics;
+	}
+
+	public void addClinics(Clinic clinic) {
+		this.clinics.add(clinic);
+	}
+
 	public Long getId() {
 		return id;
-	}
-
-	public ClinicAccount getClinicAccount() {
-		return clinicAccount;
-	}
-
-	public void setClinicAccount(ClinicAccount clinicAccount) {
-		this.clinicAccount = clinicAccount;
-	}
-
-	public List<Doctor> getDoctors() {
-		return doctors;
-	}
-
-	public void addDoctor(Doctor doctor) {
-		this.doctors.add(doctor);
 	}
 
 }

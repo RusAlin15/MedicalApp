@@ -12,4 +12,6 @@ public interface ClinicService {
 
 	void deleteAllClincs();
 
+	Clinic addClinicAccount(long accountId, long clinicId);
+
 }

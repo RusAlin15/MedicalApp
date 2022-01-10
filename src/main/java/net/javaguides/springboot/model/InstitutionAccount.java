@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,15 +15,14 @@ import lombok.Data;
 public class InstitutionAccount extends UserAccount {
 
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "institution_account_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<ClinicAccount> clinicAccounts;
 
-	public List<ClinicAccount> getClinics() {
+	public List<ClinicAccount> getClinicAccounts() {
 		return clinicAccounts;
 	}
 
-	public void addClinic(ClinicAccount clinicAccount) {
+	public void addClinicAccounts(ClinicAccount clinicAccount) {
 		this.clinicAccounts.add(clinicAccount);
 	}
 

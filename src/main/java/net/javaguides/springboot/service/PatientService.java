@@ -12,4 +12,6 @@ public interface PatientService {
 
 	Patient addEvent(long patientId, long eventId);
 
+	Patient addPatientAccount(long accountId, long patientId);
+
 }

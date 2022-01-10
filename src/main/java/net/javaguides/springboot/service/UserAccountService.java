@@ -2,6 +2,8 @@ package net.javaguides.springboot.service;
 
 import java.util.List;
 
+import net.javaguides.springboot.model.ClinicAccount;
+import net.javaguides.springboot.model.DoctorAccount;
 import net.javaguides.springboot.model.InstitutionAccount;
 import net.javaguides.springboot.model.PatientAccount;
 import net.javaguides.springboot.model.UserAccount;
@@ -10,12 +12,12 @@ public interface UserAccountService {
 
 	PatientAccount savePatientAcoount(PatientAccount patientAccount);
 
-	List<UserAccount> getAllUserAccounts();
-
 	InstitutionAccount saveInstitutionAccount(InstitutionAccount institutionAccount);
 
-	UserAccount addPatient(long accountId, long patientId);
+	ClinicAccount saveClinicAccount(ClinicAccount clinicAccount);
 
-	UserAccount addClinic(long accountId, long clinicId);
+	DoctorAccount saveDoctorAccount(DoctorAccount doctorAccount);
+
+	List<UserAccount> getAllUserAccounts();
 
 }
