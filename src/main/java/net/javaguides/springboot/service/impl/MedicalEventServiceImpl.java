@@ -6,17 +6,17 @@ import org.springframework.stereotype.Service;
 
 import net.javaguides.springboot.exception.InvalidDataException;
 import net.javaguides.springboot.exception.ResourceNotFoundException;
+import net.javaguides.springboot.model.Clinic;
 import net.javaguides.springboot.model.Diagnostic;
 import net.javaguides.springboot.model.DiseaseStatus;
 import net.javaguides.springboot.model.Doctor;
-import net.javaguides.springboot.model.Institution;
 import net.javaguides.springboot.model.MedicalEvent;
 import net.javaguides.springboot.model.MedicalEventStatus;
 import net.javaguides.springboot.model.Speciality;
 import net.javaguides.springboot.model.Status;
+import net.javaguides.springboot.repository.ClinicRepository;
 import net.javaguides.springboot.repository.DiagnosticRepository;
 import net.javaguides.springboot.repository.DoctorRepository;
-import net.javaguides.springboot.repository.InstitutionRepository;
 import net.javaguides.springboot.repository.MedicalEventRepository;
 import net.javaguides.springboot.repository.SpecialityRepository;
 import net.javaguides.springboot.repository.StatusRepository;
@@ -27,14 +27,13 @@ public class MedicalEventServiceImpl implements MedicalEventService {
 
 	private MedicalEventRepository medicalEventRepository;
 	private SpecialityRepository specialityRepository;
-	private InstitutionRepository institutionRepository;
+	private ClinicRepository institutionRepository;
 	private DoctorRepository doctorRepository;
 	private StatusRepository statusRepository;
 	private DiagnosticRepository diagnosticRepository;
 
 	public MedicalEventServiceImpl(MedicalEventRepository medicalEventRepository,
-			net.javaguides.springboot.repository.userAccountRepository userAccountRepository,
-			SpecialityRepository specialityRepository, InstitutionRepository institutionRepository,
+			SpecialityRepository specialityRepository, ClinicRepository institutionRepository,
 			DoctorRepository doctorRepository, StatusRepository statusRepository,
 			DiagnosticRepository diagnosticRepository) {
 		super();
@@ -64,15 +63,15 @@ public class MedicalEventServiceImpl implements MedicalEventService {
 	}
 
 	@Override
-	public MedicalEvent setInstitution(long eventId, long institutionId) {
+	public MedicalEvent setClinic(long eventId, long clinicId) {
 
 		MedicalEvent medicalEvent = medicalEventRepository.findById(eventId)
 				.orElseThrow(() -> new ResourceNotFoundException("MedicalEvent", "Id", eventId));
 
-		Institution institution = institutionRepository.findById(institutionId)
-				.orElseThrow(() -> new ResourceNotFoundException("Institution", "Id", institutionId));
+		Clinic clinic = institutionRepository.findById(clinicId)
+				.orElseThrow(() -> new ResourceNotFoundException("Institution", "Id", clinicId));
 
-		medicalEvent.setInstitution(institution);
+		medicalEvent.setClinic(clinic);
 		medicalEventRepository.save(medicalEvent);
 		return medicalEvent;
 	}
@@ -87,43 +86,6 @@ public class MedicalEventServiceImpl implements MedicalEventService {
 				.orElseThrow(() -> new ResourceNotFoundException("Speciality", "Id", specialityId));
 
 		medicalEvent.setSpeciality(speciality);
-		medicalEventRepository.save(medicalEvent);
-		return medicalEvent;
-	}
-
-	@Override
-	public MedicalEvent setDiseaseStatus(long eventId, long diseaseStatusId) {
-
-		MedicalEvent medicalEvent = medicalEventRepository.findById(eventId)
-				.orElseThrow(() -> new ResourceNotFoundException("MedicalEvent", "Id", eventId));
-
-		Status status = statusRepository.findById(diseaseStatusId)
-				.orElseThrow(() -> new ResourceNotFoundException("Status", "Id", diseaseStatusId));
-
-		if (status instanceof DiseaseStatus) {
-			medicalEvent.setDeseaseStatus((DiseaseStatus) status);
-		} else {
-			throw new InvalidDataException("DiseaseStatus", "Id", diseaseStatusId);
-		}
-		medicalEventRepository.save(medicalEvent);
-		return medicalEvent;
-	}
-
-	@Override
-	public MedicalEvent setEventStatus(long eventId, long eventstatusId) {
-
-		MedicalEvent medicalEvent = medicalEventRepository.findById(eventId)
-				.orElseThrow(() -> new ResourceNotFoundException("MedicalEvent", "Id", eventId));
-
-		Status status = statusRepository.findById(eventstatusId)
-				.orElseThrow(() -> new ResourceNotFoundException("Status", "Id", eventstatusId));
-
-		if (status instanceof MedicalEventStatus) {
-			medicalEvent.setMedicalEventStatus((MedicalEventStatus) status);
-		} else {
-			throw new InvalidDataException("MedicalEventStatus", "Id", eventstatusId);
-		}
-
 		medicalEventRepository.save(medicalEvent);
 		return medicalEvent;
 	}
@@ -151,7 +113,6 @@ public class MedicalEventServiceImpl implements MedicalEventService {
 				.orElseThrow(() -> new ResourceNotFoundException("Diagnostic", "Id", diagnosticIcd));
 
 		if (diagnostic.isFinalDiagnostic()) {
-			System.out.println("trsre");
 			medicalEvent.addDiagnostic(diagnostic);
 		} else {
 			throw new InvalidDataException("Diagnostic", "ICD-10", diagnosticIcd);
@@ -160,4 +121,27 @@ public class MedicalEventServiceImpl implements MedicalEventService {
 		return medicalEvent;
 	}
 
+	@Override
+	public MedicalEvent setStatus(long eventId, long statusId) {
+
+		MedicalEvent medicalEvent = medicalEventRepository.findById(eventId)
+				.orElseThrow(() -> new ResourceNotFoundException("MedicalEvent", "Id", eventId));
+
+		Status status = statusRepository.findById(statusId)
+				.orElseThrow(() -> new ResourceNotFoundException("Status", "Id", statusId));
+
+		if (status instanceof DiseaseStatus) {
+			if (status instanceof DiseaseStatus) {
+				medicalEvent.setDeseaseStatus((DiseaseStatus) status);
+			} else {
+				throw new InvalidDataException("DiseaseStatus", "Id", statusId);
+			}
+		} else if (status instanceof MedicalEventStatus) {
+			medicalEvent.setMedicalEventStatus((MedicalEventStatus) status);
+		} else {
+			throw new InvalidDataException("MedicalEventStatus", "Id", statusId);
+		}
+		medicalEventRepository.save(medicalEvent);
+		return medicalEvent;
+	}
 }

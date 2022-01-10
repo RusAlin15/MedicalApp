@@ -71,9 +71,9 @@ public class MedicalEvent {
 	private LocalDate eventDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "institution_id_fk")
+	@JoinColumn(name = "clinic_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private Institution institution;
+	private Clinic clinic;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "speciality_id_fk")
@@ -170,12 +170,12 @@ public class MedicalEvent {
 		this.speciality = speciality;
 	}
 
-	public void setInstitution(Institution institution) {
-		this.institution = institution;
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
 	}
 
-	public Institution getInstitution() {
-		return institution;
+	public Clinic getClinic() {
+		return clinic;
 	}
 
 	public Recipe getRecipe() {

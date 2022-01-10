@@ -23,23 +23,19 @@ public class Doctor {
 	@Column(name = "id")
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "institution_id_fk")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private Institution institution;
+	@Column(name = "first_name", nullable = false)
+	private String firstName;
+
+	@Column(name = "last_name", nullable = false)
+	private String lastName;
+
+	@Column(name = "cuim", nullable = false, unique = true)
+	private String cuim;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "speciality_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Speciality speciality;
-
-	public Institution getInstitution() {
-		return institution;
-	}
-
-	public void setInstitution(Institution institution) {
-		this.institution = institution;
-	}
 
 	public Speciality getSpeciality() {
 		return speciality;
@@ -47,6 +43,30 @@ public class Doctor {
 
 	public void setSpeciality(Speciality speciality) {
 		this.speciality = speciality;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getCuim() {
+		return cuim;
+	}
+
+	public void setCuim(String cuim) {
+		this.cuim = cuim;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 }

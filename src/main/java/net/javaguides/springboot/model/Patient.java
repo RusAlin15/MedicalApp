@@ -6,17 +6,26 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
-import net.javaguides.springboot.enums.Gender;
 
 @Data
 @Entity
-public class Patient extends UserAccount {
+@Table(name = "patient")
+public class Patient {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
 
 	@Column(name = "first_name", nullable = false)
 	private String firstName;
@@ -75,10 +84,6 @@ public class Patient extends UserAccount {
 
 	public String getCnp() {
 		return cnp;
-	}
-
-	public void setGender(Gender gender) {
-		this.gender = gender.toString();
 	}
 
 	public String getGender() {

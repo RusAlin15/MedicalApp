@@ -37,11 +37,16 @@ public class MedicalEventController {
 				HttpStatus.OK);
 	}
 
-	@PutMapping("/institution/{eventId}/{institutionId}")
-	public ResponseEntity<MedicalEvent> setInstitution(@PathVariable("eventId") long eventId,
-			@PathVariable("institutionId") long institutionId) {
-		return new ResponseEntity<MedicalEvent>(medicalEventService.setInstitution(eventId, institutionId),
-				HttpStatus.OK);
+	@PutMapping("/status/{eventId}/{statusId}")
+	public ResponseEntity<MedicalEvent> setStatus(@PathVariable("eventId") long eventId,
+			@PathVariable("statusId") long statusId) {
+		return new ResponseEntity<MedicalEvent>(medicalEventService.setStatus(eventId, statusId), HttpStatus.OK);
+	}
+
+	@PutMapping("/clinic/{eventId}/{clinicId}")
+	public ResponseEntity<MedicalEvent> setClinic(@PathVariable("eventId") long eventId,
+			@PathVariable("clinicId") long clinicId) {
+		return new ResponseEntity<MedicalEvent>(medicalEventService.setClinic(eventId, clinicId), HttpStatus.OK);
 	}
 
 	@PutMapping("/speciality/{eventId}/{specialityId}")
@@ -55,20 +60,6 @@ public class MedicalEventController {
 	public ResponseEntity<MedicalEvent> setDoctor(@PathVariable("eventId") long eventId,
 			@PathVariable("doctorId") long doctorId) {
 		return new ResponseEntity<MedicalEvent>(medicalEventService.setDoctor(eventId, doctorId), HttpStatus.OK);
-	}
-
-	@PutMapping("/disease/{eventId}/{diseaseStatusId}")
-	public ResponseEntity<MedicalEvent> setDiseaseStatus(@PathVariable("eventId") long eventId,
-			@PathVariable("diseaseStatusId") long diseaseStatusId) {
-		return new ResponseEntity<MedicalEvent>(medicalEventService.setDiseaseStatus(eventId, diseaseStatusId),
-				HttpStatus.OK);
-	}
-
-	@PutMapping("/status/{eventId}/{evendStatusId}")
-	public ResponseEntity<MedicalEvent> setEventStatus(@PathVariable("eventId") long eventId,
-			@PathVariable("evendStatusId") long evendStatusId) {
-		return new ResponseEntity<MedicalEvent>(medicalEventService.setEventStatus(eventId, evendStatusId),
-				HttpStatus.OK);
 	}
 
 	@GetMapping

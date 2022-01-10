@@ -1,10 +1,11 @@
 package net.javaguides.springboot.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -12,10 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
 
 @Data
-@MappedSuperclass
+@Entity
+@Table(name = "account")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "userType", defaultImpl = Object.class)
-@JsonSubTypes({ @JsonSubTypes.Type(value = Patient.class, name = "Patient"),
-		@JsonSubTypes.Type(value = Institution.class, name = "Institution") })
+@JsonSubTypes({ @JsonSubTypes.Type(value = PatientAccount.class, name = "PatientAccount"),
+		@JsonSubTypes.Type(value = InstitutionAccount.class, name = "InstitutionAccount") })
 public abstract class UserAccount {
 
 	@Id

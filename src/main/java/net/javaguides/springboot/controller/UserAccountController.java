@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.javaguides.springboot.model.Institution;
-import net.javaguides.springboot.model.Patient;
+import net.javaguides.springboot.model.InstitutionAccount;
+import net.javaguides.springboot.model.PatientAccount;
 import net.javaguides.springboot.model.UserAccount;
 import net.javaguides.springboot.service.UserAccountService;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/account")
 public class UserAccountController {
 
 	private UserAccountService userAccountService;
@@ -29,18 +29,21 @@ public class UserAccountController {
 	}
 
 	@PostMapping("/patient")
-	public ResponseEntity<Patient> savePatient(@RequestBody Patient patient) {
-		return new ResponseEntity<Patient>(userAccountService.savePatient(patient), HttpStatus.CREATED);
+	public ResponseEntity<PatientAccount> savePatientAcoount(@RequestBody PatientAccount patientAccount) {
+		return new ResponseEntity<PatientAccount>(userAccountService.savePatientAcoount(patientAccount),
+				HttpStatus.CREATED);
 	}
 
-	@GetMapping("/patient")
-	public List<Patient> getAllUserAccounts() {
+	@GetMapping
+	public List<UserAccount> getAllUserAccounts() {
 		return userAccountService.getAllUserAccounts();
 	}
 
 	@PostMapping("/institution")
-	public ResponseEntity<UserAccount> saveInstitution(@RequestBody Institution institution) {
-		return new ResponseEntity<UserAccount>(userAccountService.saveInstitution(institution), HttpStatus.CREATED);
+	public ResponseEntity<InstitutionAccount> saveInstitutionAccount(
+			@RequestBody InstitutionAccount institutionAccount) {
+		return new ResponseEntity<InstitutionAccount>(userAccountService.saveInstitutionAccount(institutionAccount),
+				HttpStatus.CREATED);
 	}
 
 //	// build create doctor REST API
@@ -51,10 +54,16 @@ public class UserAccountController {
 //				HttpStatus.CREATED);
 //	}
 
-	@PutMapping("event/{patientId}/{eventId}")
-	public ResponseEntity<UserAccount> addEvent(@PathVariable("patientId") long patientId,
-			@PathVariable("eventId") long eventId) {
-		return new ResponseEntity<UserAccount>(userAccountService.addEvent(patientId, eventId), HttpStatus.OK);
+	@PutMapping("/patient/{accountId}/{patientId}")
+	public ResponseEntity<UserAccount> addPatient(@PathVariable("accountId") long accountId,
+			@PathVariable("patientId") long patientId) {
+		return new ResponseEntity<UserAccount>(userAccountService.addPatient(accountId, patientId), HttpStatus.OK);
+	}
+
+	@PutMapping("/institution/{accountId}/{clinicId}")
+	public ResponseEntity<UserAccount> addClinic(@PathVariable("accountId") long accountId,
+			@PathVariable("clinicId") long clinicId) {
+		return new ResponseEntity<UserAccount>(userAccountService.addClinic(accountId, clinicId), HttpStatus.OK);
 	}
 
 //	@Transactional

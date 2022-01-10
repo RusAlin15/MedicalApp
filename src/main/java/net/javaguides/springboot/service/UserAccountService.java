@@ -2,24 +2,20 @@ package net.javaguides.springboot.service;
 
 import java.util.List;
 
-import net.javaguides.springboot.model.Institution;
-import net.javaguides.springboot.model.Patient;
+import net.javaguides.springboot.model.InstitutionAccount;
+import net.javaguides.springboot.model.PatientAccount;
 import net.javaguides.springboot.model.UserAccount;
 
 public interface UserAccountService {
 
-	Patient savePatient(Patient patient);
+	PatientAccount savePatientAcoount(PatientAccount patientAccount);
 
-//	UserAccount saveDoctor(Doctor doctor, long institutionId, long specialityId);
+	List<UserAccount> getAllUserAccounts();
 
-	List<Patient> getAllUserAccounts();
+	InstitutionAccount saveInstitutionAccount(InstitutionAccount institutionAccount);
 
-//	UserAccount getUserAccountById(long id);
+	UserAccount addPatient(long accountId, long patientId);
 
-	UserAccount addEvent(long UserAccountAccountId, long eventId);
-
-	UserAccount saveInstitution(Institution institution);
-
-//	void deleteAllUserAccounts();
+	UserAccount addClinic(long accountId, long clinicId);
 
 }
