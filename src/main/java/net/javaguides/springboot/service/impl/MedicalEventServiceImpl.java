@@ -18,7 +18,6 @@ import net.javaguides.springboot.repository.ClinicRepository;
 import net.javaguides.springboot.repository.DiagnosticRepository;
 import net.javaguides.springboot.repository.DoctorRepository;
 import net.javaguides.springboot.repository.MedicalEventRepository;
-import net.javaguides.springboot.repository.SpecialityRepository;
 import net.javaguides.springboot.repository.StatusRepository;
 import net.javaguides.springboot.service.MedicalEventService;
 
@@ -26,19 +25,19 @@ import net.javaguides.springboot.service.MedicalEventService;
 public class MedicalEventServiceImpl implements MedicalEventService {
 
 	private MedicalEventRepository medicalEventRepository;
-	private SpecialityRepository specialityRepository;
+	private SpecialityServiceImpl specialityService;
 	private ClinicRepository institutionRepository;
 	private DoctorRepository doctorRepository;
 	private StatusRepository statusRepository;
 	private DiagnosticRepository diagnosticRepository;
 
 	public MedicalEventServiceImpl(MedicalEventRepository medicalEventRepository,
-			SpecialityRepository specialityRepository, ClinicRepository institutionRepository,
+			SpecialityServiceImpl specialityService, ClinicRepository institutionRepository,
 			DoctorRepository doctorRepository, StatusRepository statusRepository,
 			DiagnosticRepository diagnosticRepository) {
 		super();
 		this.medicalEventRepository = medicalEventRepository;
-		this.specialityRepository = specialityRepository;
+		this.specialityService = specialityService;
 		this.institutionRepository = institutionRepository;
 		this.doctorRepository = doctorRepository;
 		this.statusRepository = statusRepository;
@@ -81,6 +80,9 @@ public class MedicalEventServiceImpl implements MedicalEventService {
 
 		MedicalEvent medicalEvent = medicalEventRepository.findById(eventId)
 				.orElseThrow(() -> new ResourceNotFoundException("MedicalEvent", "Id", eventId));
+
+		Speciality speciality = specialityService.getSpecialityRepository().findById(specialityId)
+				.orElseThrow(() -> new ResourceNotFoundException("Speciality", "Id", specialityId));
 
 		Speciality speciality = specialityRepository.findById(specialityId)
 				.orElseThrow(() -> new ResourceNotFoundException("Speciality", "Id", specialityId));

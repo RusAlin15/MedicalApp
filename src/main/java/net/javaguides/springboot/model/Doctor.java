@@ -1,11 +1,14 @@
 package net.javaguides.springboot.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -28,6 +31,15 @@ public class Doctor {
 	@Column(name = "last_name", nullable = false)
 	private String lastName;
 
+	@Column(name = "email", nullable = false)
+	private String email;
+
+	@Column(name = "password", nullable = false)
+	private String password;
+
+	@Column(name = "phone_number", nullable = false)
+	private String phoneNumber;
+
 	@Column(name = "cuim", nullable = false, unique = true)
 	private String cuim;
 
@@ -35,9 +47,9 @@ public class Doctor {
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Speciality speciality;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private DoctorAccount doctorAccount;
+	private List<Clinic> clinics;
 
 	public Speciality getSpeciality() {
 		return speciality;
@@ -69,14 +81,6 @@ public class Doctor {
 
 	public Long getId() {
 		return id;
-	}
-
-	public DoctorAccount getDoctorAccount() {
-		return doctorAccount;
-	}
-
-	public void setDoctorAccount(DoctorAccount doctorAccount) {
-		this.doctorAccount = doctorAccount;
 	}
 
 	public String getFirstName() {

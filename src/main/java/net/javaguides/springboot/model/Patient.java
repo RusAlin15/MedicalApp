@@ -10,8 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -52,7 +52,7 @@ public class Patient {
 	@OneToMany(targetEntity = MedicalEvent.class, cascade = CascadeType.ALL)
 	private List<MedicalEvent> medicalEvents;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private PatientAccount patientAccount;
 
@@ -106,14 +106,6 @@ public class Patient {
 
 	public List<MedicalEvent> getMedicalEvents() {
 		return medicalEvents;
-	}
-
-	public PatientAccount getPatientAccount() {
-		return patientAccount;
-	}
-
-	public void setPatientAccount(PatientAccount patientAccount) {
-		this.patientAccount = patientAccount;
 	}
 
 	public Long getId() {

@@ -5,12 +5,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -18,13 +14,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "clinic")
-public class Clinic {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+public class Clinic extends User {
 
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
@@ -32,13 +22,13 @@ public class Clinic {
 	@Column(name = "webSite", unique = true)
 	private String webSite;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private ClinicAccount clinicAccount;
-
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<Doctor> doctors;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private Institution institution;
 
 	public String getName() {
 		return name;
@@ -54,18 +44,6 @@ public class Clinic {
 
 	public void setWebSite(String webSite) {
 		this.webSite = webSite;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public ClinicAccount getClinicAccount() {
-		return clinicAccount;
-	}
-
-	public void setClinicAccount(ClinicAccount clinicAccount) {
-		this.clinicAccount = clinicAccount;
 	}
 
 	public List<Doctor> getDoctors() {

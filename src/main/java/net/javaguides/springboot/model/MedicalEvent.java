@@ -11,7 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -53,16 +52,13 @@ public class MedicalEvent {
 	private String recomandedTreatment;
 
 	@ManyToMany(targetEntity = Diagnostic.class, cascade = CascadeType.ALL)
-	@JoinColumn(name = "diagnostic_icd_fk", referencedColumnName = "icd_code")
 	private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "disease_status_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private DiseaseStatus deseaseStatus;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "medical_event_status_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private MedicalEventStatus medicalEventStatus;
 
@@ -71,28 +67,27 @@ public class MedicalEvent {
 	private LocalDate eventDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "clinic_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Clinic clinic;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "speciality_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Speciality speciality;
 
 	@OneToMany(targetEntity = ReferralTicket.class, cascade = CascadeType.ALL)
-	@JoinColumn(name = "referal_id_fk")
 	private List<ReferralTicket> referralTickets;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "recipe_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Recipe recipe;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "doctor_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Doctor doctor;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private Patient patient;
 
 	public Doctor getDoctor() {
 		return doctor;

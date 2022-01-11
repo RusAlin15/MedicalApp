@@ -4,29 +4,28 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import net.javaguides.springboot.model.ClinicAccount;
-import net.javaguides.springboot.model.DoctorAccount;
-import net.javaguides.springboot.model.InstitutionAccount;
+import net.javaguides.springboot.model.Clinic;
+import net.javaguides.springboot.model.Institution;
 import net.javaguides.springboot.model.PatientAccount;
-import net.javaguides.springboot.model.UserAccount;
+import net.javaguides.springboot.model.User;
 import net.javaguides.springboot.repository.ClinicRepository;
 import net.javaguides.springboot.repository.MedicalEventRepository;
 import net.javaguides.springboot.repository.PatientRepository;
-import net.javaguides.springboot.repository.UserAccountRepository;
-import net.javaguides.springboot.service.UserAccountService;
+import net.javaguides.springboot.repository.UserRepository;
+import net.javaguides.springboot.service.UserService;
 
 @Service
-public class UserServiceImpl implements UserAccountService {
+public class UserServiceImpl implements UserService {
 
-	private UserAccountRepository userAccountRepository;
+	private UserRepository userRepository;
 	private MedicalEventRepository medicalEventRepository;
 	private PatientRepository patientRepository;
 	private ClinicRepository clicicRepository;
 
-	public UserServiceImpl(UserAccountRepository userAccountRepository, MedicalEventRepository medicalEventRepository,
+	public UserServiceImpl(UserRepository userRepository, MedicalEventRepository medicalEventRepository,
 			PatientRepository patientRepository, ClinicRepository clicicRepository) {
 		super();
-		this.userAccountRepository = userAccountRepository;
+		this.userRepository = userRepository;
 		this.medicalEventRepository = medicalEventRepository;
 		this.patientRepository = patientRepository;
 		this.clicicRepository = clicicRepository;
@@ -34,27 +33,22 @@ public class UserServiceImpl implements UserAccountService {
 
 	@Override
 	public PatientAccount savePatientAcoount(PatientAccount patientAccount) {
-		return userAccountRepository.save(patientAccount);
+		return userRepository.save(patientAccount);
 	}
 
 	@Override
-	public InstitutionAccount saveInstitutionAccount(InstitutionAccount institutionAccount) {
-		return userAccountRepository.save(institutionAccount);
+	public Institution saveInstitution(Institution institution) {
+		return userRepository.save(institution);
 	}
 
 	@Override
-	public ClinicAccount saveClinicAccount(ClinicAccount clinicAccount) {
-		return userAccountRepository.save(clinicAccount);
+	public Clinic saveClinic(Clinic clinic) {
+		return userRepository.save(clinic);
 	}
 
 	@Override
-	public DoctorAccount saveDoctorAccount(DoctorAccount doctorAccount) {
-		return userAccountRepository.save(doctorAccount);
-	}
-
-	@Override
-	public List<UserAccount> getAllUserAccounts() {
-		return userAccountRepository.findAll();
+	public List<User> getAllUsers() {
+		return userRepository.findAll();
 	}
 
 }

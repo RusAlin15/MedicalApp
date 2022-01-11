@@ -4,15 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import net.javaguides.springboot.exception.InvalidDataException;
 import net.javaguides.springboot.exception.ResourceNotFoundException;
 import net.javaguides.springboot.model.MedicalEvent;
 import net.javaguides.springboot.model.Patient;
-import net.javaguides.springboot.model.PatientAccount;
-import net.javaguides.springboot.model.UserAccount;
 import net.javaguides.springboot.repository.MedicalEventRepository;
 import net.javaguides.springboot.repository.PatientRepository;
-import net.javaguides.springboot.repository.UserAccountRepository;
+import net.javaguides.springboot.repository.UserRepository;
 import net.javaguides.springboot.service.PatientService;
 import net.javaguides.springboot.validator.CnpValidator;
 
@@ -20,10 +17,10 @@ import net.javaguides.springboot.validator.CnpValidator;
 public class PatientServiceImpl implements PatientService {
 	private PatientRepository patientRepository;
 	private MedicalEventRepository medicalEventRepository;
-	private UserAccountRepository accountRepository;
+	private UserRepository accountRepository;
 
 	public PatientServiceImpl(PatientRepository patientRepository, MedicalEventRepository medicalEventRepository,
-			UserAccountRepository accountRepository) {
+			UserRepository accountRepository) {
 		super();
 		this.patientRepository = patientRepository;
 		this.medicalEventRepository = medicalEventRepository;
@@ -60,25 +57,6 @@ public class PatientServiceImpl implements PatientService {
 				.orElseThrow(() -> new ResourceNotFoundException("MedicalEvent", "Id", eventId));
 
 		patient.addMedicalEvent(medicalEvent);
-		patientRepository.save(patient);
-		return patient;
-	}
-
-	@Override
-	public Patient addPatientAccount(long accountId, long patientId) {
-
-		UserAccount userAccount = accountRepository.findById(accountId)
-				.orElseThrow(() -> new ResourceNotFoundException("UserAccount", "Id", accountId));
-
-		Patient patient = patientRepository.findById(patientId)
-				.orElseThrow(() -> new ResourceNotFoundException("Patiente", "Id", patientId));
-
-		if (userAccount.getClass() == PatientAccount.class) {
-			patient.setPatientAccount((PatientAccount) userAccount);
-		} else {
-			throw new InvalidDataException("Invalid", "Id", patientId);
-		}
-
 		patientRepository.save(patient);
 		return patient;
 	}

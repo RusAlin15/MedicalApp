@@ -17,10 +17,9 @@ import lombok.Data;
 @Table(name = "account")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "userType", defaultImpl = Object.class)
 @JsonSubTypes({ @JsonSubTypes.Type(value = PatientAccount.class, name = "PatientAccount"),
-		@JsonSubTypes.Type(value = InstitutionAccount.class, name = "InstitutionAccount"),
-		@JsonSubTypes.Type(value = ClinicAccount.class, name = "ClinicAccount"),
-		@JsonSubTypes.Type(value = DoctorAccount.class, name = "DoctorAccount") })
-public abstract class UserAccount {
+		@JsonSubTypes.Type(value = Institution.class, name = "Institution"),
+		@JsonSubTypes.Type(value = Clinic.class, name = "Clinic") })
+public abstract class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

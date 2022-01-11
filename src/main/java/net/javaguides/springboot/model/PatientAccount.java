@@ -1,11 +1,20 @@
 package net.javaguides.springboot.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
 @Data
 @Entity
-public class PatientAccount extends UserAccount {
+public class PatientAccount extends User {
 
+	@OneToMany(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private List<Patient> patients;
 }

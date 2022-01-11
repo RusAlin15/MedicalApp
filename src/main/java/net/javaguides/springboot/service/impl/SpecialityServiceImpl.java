@@ -27,4 +27,8 @@ public class SpecialityServiceImpl implements SpecialityService {
 		return specialityRepository.findAll();
 	}
 
+	public SpecialityRepository getSpecialityRepository() {
+		return specialityRepository;
+	}
+
 }
