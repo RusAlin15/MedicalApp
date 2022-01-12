@@ -1,13 +1,9 @@
 package net.javaguides.springboot.service;
 
-import java.util.List;
-
-import net.javaguides.springboot.model.Institution;
+import net.javaguides.springboot.repository.InstitutionRepository;
 
 public interface InstitutionService {
 
-	Institution saveInstitution(Institution institution);
-
-	List<Institution> getAllInstitutions();
+	InstitutionRepository getRepository();
 
 }

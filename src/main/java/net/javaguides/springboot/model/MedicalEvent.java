@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -54,40 +55,50 @@ public class MedicalEvent {
 	@ManyToMany(targetEntity = Diagnostic.class, cascade = CascadeType.ALL)
 	private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private DiseaseStatus deseaseStatus;
+	@Column(name = "disease_status")
+	private String diseaseStatus;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private MedicalEventStatus medicalEventStatus;
+	@Column(name = "event_status")
+	private String eventStatus;
 
 	@DateTimeFormat(pattern = "YYYY-MM-DD")
 	@Column(name = "event_date", nullable = false)
 	private LocalDate eventDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "clinic_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Clinic clinic;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "speciality_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Speciality speciality;
 
 	@OneToMany(targetEntity = ReferralTicket.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "referral_ticket_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<ReferralTicket> referralTickets;
 
 	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "recipe_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Recipe recipe;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "doctor_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Doctor doctor;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "patient_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Patient patient;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "medicalEvent_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private List<MedicalEvent> subMedicalEvents;
 
 	public Doctor getDoctor() {
 		return doctor;
@@ -185,28 +196,36 @@ public class MedicalEvent {
 		return referralTickets;
 	}
 
-	public DiseaseStatus getDeseaseStatus() {
-		return deseaseStatus;
-	}
-
-	public void setDeseaseStatus(DiseaseStatus deseaseStatus) {
-		this.deseaseStatus = deseaseStatus;
-	}
-
-	public MedicalEventStatus getMedicalEventStatus() {
-		return medicalEventStatus;
-	}
-
-	public void setMedicalEventStatus(MedicalEventStatus medicalEventStatus) {
-		this.medicalEventStatus = medicalEventStatus;
-	}
-
 	public void addDiagnostic(Diagnostic diagnostic) {
 		this.diagnostics.add(diagnostic);
 	}
 
 	public List<Diagnostic> getDiagnostics() {
 		return diagnostics;
+	}
+
+	public String getDiseaseStatus() {
+		return diseaseStatus;
+	}
+
+	public void setDiseaseStatus(String diseaseStatus) {
+		this.diseaseStatus = diseaseStatus;
+	}
+
+	public String getEventStatus() {
+		return eventStatus;
+	}
+
+	public void setEventStatus(String eventStatus) {
+		this.eventStatus = eventStatus;
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
 }

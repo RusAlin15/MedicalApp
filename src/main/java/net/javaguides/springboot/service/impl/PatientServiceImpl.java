@@ -4,27 +4,18 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import net.javaguides.springboot.exception.ResourceNotFoundException;
-import net.javaguides.springboot.model.MedicalEvent;
 import net.javaguides.springboot.model.Patient;
-import net.javaguides.springboot.repository.MedicalEventRepository;
 import net.javaguides.springboot.repository.PatientRepository;
-import net.javaguides.springboot.repository.UserRepository;
 import net.javaguides.springboot.service.PatientService;
 import net.javaguides.springboot.validator.CnpValidator;
 
 @Service
 public class PatientServiceImpl implements PatientService {
 	private PatientRepository patientRepository;
-	private MedicalEventRepository medicalEventRepository;
-	private UserRepository accountRepository;
 
-	public PatientServiceImpl(PatientRepository patientRepository, MedicalEventRepository medicalEventRepository,
-			UserRepository accountRepository) {
+	public PatientServiceImpl(PatientRepository patientRepository) {
 		super();
 		this.patientRepository = patientRepository;
-		this.medicalEventRepository = medicalEventRepository;
-		this.accountRepository = accountRepository;
 	}
 
 	@Override
@@ -45,20 +36,6 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<Patient> getAllPatients() {
 		return patientRepository.findAll();
-	}
-
-	@Override
-	public Patient addEvent(long patientId, long eventId) {
-
-		Patient patient = patientRepository.findById(patientId)
-				.orElseThrow(() -> new ResourceNotFoundException("Patient", "Id", patientId));
-
-		MedicalEvent medicalEvent = medicalEventRepository.findById(eventId)
-				.orElseThrow(() -> new ResourceNotFoundException("MedicalEvent", "Id", eventId));
-
-		patient.addMedicalEvent(medicalEvent);
-		patientRepository.save(patient);
-		return patient;
 	}
 
 }

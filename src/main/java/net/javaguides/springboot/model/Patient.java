@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -50,11 +51,14 @@ public class Patient {
 	private String gender;
 
 	@OneToMany(targetEntity = MedicalEvent.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "patient_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<MedicalEvent> medicalEvents;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private PatientAccount patientAccount;
+	private PatientUser patientAccount;
 
 	public String getFirstName() {
 		return firstName;
@@ -110,6 +114,14 @@ public class Patient {
 
 	public Long getId() {
 		return id;
+	}
+
+	public PatientUser getPatientAccount() {
+		return patientAccount;
+	}
+
+	public void setPatientAccount(PatientUser patientAccount) {
+		this.patientAccount = patientAccount;
 	}
 
 }

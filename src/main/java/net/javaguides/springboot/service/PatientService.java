@@ -10,8 +10,4 @@ public interface PatientService {
 
 	List<Patient> getAllPatients();
 
-	Patient addEvent(long patientId, long eventId);
-
-	Patient addPatientAccount(long accountId, long patientId);
-
 }
