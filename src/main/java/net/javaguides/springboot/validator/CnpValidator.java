@@ -172,5 +172,4 @@ public class CnpValidator {
 	public District getBirthDistrict() {
 		return birthDistrict;
 	}
-
 }

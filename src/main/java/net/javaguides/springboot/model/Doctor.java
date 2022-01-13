@@ -3,11 +3,7 @@ package net.javaguides.springboot.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,12 +11,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "doctor")
 public class Doctor extends User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
 
 	@Column(name = "first_name", nullable = false)
 	private String firstName;
@@ -61,11 +52,6 @@ public class Doctor extends User {
 
 	public void setCuim(String cuim) {
 		this.cuim = cuim;
-	}
-
-	@Override
-	public Long getId() {
-		return id;
 	}
 
 	public String getFirstName() {

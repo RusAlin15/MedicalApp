@@ -2,14 +2,29 @@ package net.javaguides.springboot.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import net.javaguides.springboot.exception.ResourceNotFoundException;
 import net.javaguides.springboot.model.MedicalEvent;
+import net.javaguides.springboot.repository.MedicalEventRepository;
 
-public interface MedicalEventService {
+@Service
+public class MedicalEventService {
+	@Autowired
+	private MedicalEventRepository medicalEventRepository;
 
-	public List<MedicalEvent> getAllMedialEvents();
+	public MedicalEvent saveMedicalEvent(MedicalEvent medicalEvent) {
+		return medicalEventRepository.save(medicalEvent);
+	}
 
-	public MedicalEvent getMedicalEventById(long id);
+	public List<MedicalEvent> getAllMedialEvents() {
+		return medicalEventRepository.findAll();
+	}
 
-	public MedicalEvent saveMedicalEvent(MedicalEvent medicalEvent);
+	public MedicalEvent getMedicalEventById(long id) {
+		return medicalEventRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Medical Event", "Id", id));
+	}
 
 }

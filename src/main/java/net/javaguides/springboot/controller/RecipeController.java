@@ -2,6 +2,7 @@ package net.javaguides.springboot.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +17,9 @@ import net.javaguides.springboot.service.RecipeService;
 @RestController
 @RequestMapping("api/recipe")
 public class RecipeController {
-	private RecipeService recipeService;
 
-	public RecipeController(RecipeService recipeService) {
-		super();
-		this.recipeService = recipeService;
-	}
+	@Autowired
+	private RecipeService recipeService;
 
 	@PostMapping
 	private ResponseEntity<Recipe> saveRecipe(@RequestBody Recipe recipe) {

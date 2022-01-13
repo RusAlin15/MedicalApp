@@ -2,6 +2,7 @@ package net.javaguides.springboot.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +18,8 @@ import net.javaguides.springboot.service.UserService;
 @RequestMapping("/api/account")
 public class UserController {
 
+	@Autowired
 	private UserService userService;
-
-	public UserController(UserService userService) {
-		super();
-		this.userService = userService;
-	}
 
 	@PostMapping
 	public ResponseEntity<User> saveUser(@RequestBody User user) {

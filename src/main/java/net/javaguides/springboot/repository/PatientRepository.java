@@ -6,4 +6,6 @@ import net.javaguides.springboot.model.Patient;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
+	Patient findByCnp(String cnp);
+
 }

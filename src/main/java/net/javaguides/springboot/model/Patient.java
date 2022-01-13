@@ -50,7 +50,7 @@ public class Patient {
 	@Column(name = "gender", nullable = false)
 	private String gender;
 
-	@OneToMany(targetEntity = MedicalEvent.class, cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = MedicalEvent.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "patient_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<MedicalEvent> medicalEvents;
@@ -59,6 +59,16 @@ public class Patient {
 	@JoinColumn(name = "user_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private PatientUser patientAccount;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "patient_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private List<LabAnalyse> labAnalysisResults;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "patient_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private List<LabScreening> labScreeningResults;
 
 	public String getFirstName() {
 		return firstName;
@@ -122,6 +132,14 @@ public class Patient {
 
 	public void setPatientAccount(PatientUser patientAccount) {
 		this.patientAccount = patientAccount;
+	}
+
+	public List<LabAnalyse> getLabAnalysisResults() {
+		return labAnalysisResults;
+	}
+
+	public List<LabScreening> getLabScreeningResults() {
+		return labScreeningResults;
 	}
 
 }

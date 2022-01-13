@@ -4,10 +4,12 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +22,8 @@ import net.javaguides.springboot.service.PatientService;
 @RequestMapping("/api/patient")
 public class PatientController {
 
+	@Autowired
 	private PatientService patientService;
-
-	public PatientController(PatientService patientService) {
-		super();
-		this.patientService = patientService;
-	}
 
 	@PostMapping()
 	public ResponseEntity<Patient> savePatient(@RequestBody Patient patient) {
@@ -35,6 +33,12 @@ public class PatientController {
 	@GetMapping()
 	public List<Patient> getAllPatients() {
 		return patientService.getAllPatients();
+	}
+
+	@GetMapping("/{cnp}")
+	public ResponseEntity<Patient> findByCnp(@PathVariable String cnp) {
+
+		return new ResponseEntity<Patient>(patientService.findByCnp(cnp), HttpStatus.OK);
 	}
 
 	@Transactional

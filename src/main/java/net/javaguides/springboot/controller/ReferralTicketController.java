@@ -2,6 +2,7 @@ package net.javaguides.springboot.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +17,8 @@ import net.javaguides.springboot.service.ReferralTicketService;
 @RestController
 @RequestMapping("api/referral")
 public class ReferralTicketController {
+	@Autowired
 	private ReferralTicketService referralTicketService;
-
-	public ReferralTicketController(ReferralTicketService referralTicketService) {
-		super();
-		this.referralTicketService = referralTicketService;
-	}
 
 	@PostMapping
 	private ResponseEntity<ReferralTicket> saveReferralTicket(@RequestBody ReferralTicket referralTicket) {

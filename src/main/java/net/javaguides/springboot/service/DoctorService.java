@@ -2,12 +2,23 @@ package net.javaguides.springboot.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import net.javaguides.springboot.model.Doctor;
+import net.javaguides.springboot.repository.DoctorRepository;
 
-public interface DoctorService {
+@Service
+public class DoctorService {
+	@Autowired
+	private DoctorRepository doctorRepository;
 
-	List<Doctor> getAllDoctors();
+	public Doctor saveDoctor(Doctor doctor) {
+		return doctorRepository.save(doctor);
+	}
 
-	Doctor saveDoctor(Doctor doctor);
+	public List<Doctor> getAllDoctors() {
+		return doctorRepository.findAll();
+	}
 
 }

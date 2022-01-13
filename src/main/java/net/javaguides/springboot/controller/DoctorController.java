@@ -2,6 +2,7 @@ package net.javaguides.springboot.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +17,8 @@ import net.javaguides.springboot.service.DoctorService;
 @RestController
 @RequestMapping("api/doctor")
 public class DoctorController {
+	@Autowired
 	private DoctorService doctorService;
-
-	public DoctorController(DoctorService doctorService) {
-		super();
-		this.doctorService = doctorService;
-	}
 
 	@PostMapping
 	public ResponseEntity<Doctor> saveDoctor(@RequestBody Doctor doctor) {

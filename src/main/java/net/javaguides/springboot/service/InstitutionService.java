@@ -1,9 +1,17 @@
 package net.javaguides.springboot.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import net.javaguides.springboot.repository.InstitutionRepository;
 
-public interface InstitutionService {
+@Service
+public class InstitutionService {
+	@Autowired
+	InstitutionRepository institutionRepository;
 
-	InstitutionRepository getRepository();
+	public InstitutionRepository getRepository() {
+		return institutionRepository;
+	}
 
 }

@@ -2,6 +2,7 @@ package net.javaguides.springboot.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,14 +18,9 @@ import net.javaguides.springboot.service.SpecialityService;
 @RequestMapping("api/speciality")
 
 public class SpecialityController {
+	@Autowired
 	private SpecialityService specialityService;
 
-	public SpecialityController(SpecialityService specialityService) {
-		super();
-		this.specialityService = specialityService;
-	}
-
-	// build create MedicalEvent REST API
 	@PostMapping
 	public ResponseEntity<Speciality> saveSpeciality(@RequestBody Speciality speciality) {
 		return new ResponseEntity<>(specialityService.saveSpeciality(speciality), HttpStatus.CREATED);
