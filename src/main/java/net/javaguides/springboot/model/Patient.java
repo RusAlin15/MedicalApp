@@ -7,13 +7,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,20 +21,11 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "patient")
-public class Patient {
+@Table(schema = "administration")
+public class Patient extends Person {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
-
-	@Column(name = "first_name", nullable = false)
-	private String firstName;
-
-	@Column(name = "last_name", nullable = false)
-	private String lastName;
-
+	@NotEmpty
+	@Pattern(regexp = "^[1-9]\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])(0[1-9]|[1-4]\\d|5[0-2]|99)(00[1-9]|0[1-9]\\d|[1-9]\\d\\d)\\d$")
 	@Column(name = "cnp", nullable = false, unique = true)
 	private String cnp;
 
@@ -55,11 +44,6 @@ public class Patient {
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<MedicalEvent> medicalEvents;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id_fk")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private PatientUser patientAccount;
-
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "patient_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -70,20 +54,17 @@ public class Patient {
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<LabScreening> labScreeningResults;
 
-	public String getFirstName() {
-		return firstName;
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id_fk")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private List<Patient> patients;
+
+	public String getCnp() {
+		return cnp;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setCnp(String cnp) {
+		this.cnp = cnp;
 	}
 
 	public LocalDate getBirthDate() {
@@ -102,10 +83,6 @@ public class Patient {
 		this.age = age;
 	}
 
-	public String getCnp() {
-		return cnp;
-	}
-
 	public String getGender() {
 		return gender;
 	}
@@ -114,24 +91,8 @@ public class Patient {
 		this.gender = gender;
 	}
 
-	public void addMedicalEvent(MedicalEvent medicalEvent) {
-		this.medicalEvents.add(medicalEvent);
-	}
-
 	public List<MedicalEvent> getMedicalEvents() {
 		return medicalEvents;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public PatientUser getPatientAccount() {
-		return patientAccount;
-	}
-
-	public void setPatientAccount(PatientUser patientAccount) {
-		this.patientAccount = patientAccount;
 	}
 
 	public List<LabAnalyse> getLabAnalysisResults() {

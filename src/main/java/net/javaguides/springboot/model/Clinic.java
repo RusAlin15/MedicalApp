@@ -2,7 +2,6 @@ package net.javaguides.springboot.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -15,13 +14,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Clinic extends User {
-
-	@Column(name = "name", nullable = false, unique = true)
-	private String name;
-
-	@Column(name = "webSite", unique = true)
-	private String webSite;
+public class Clinic extends Institute {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -31,22 +24,6 @@ public class Clinic extends User {
 	@JoinColumn(name = "institution_id_fk")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Institution institution;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getWebSite() {
-		return webSite;
-	}
-
-	public void setWebSite(String webSite) {
-		this.webSite = webSite;
-	}
 
 	public List<Doctor> getDoctors() {
 		return doctors;

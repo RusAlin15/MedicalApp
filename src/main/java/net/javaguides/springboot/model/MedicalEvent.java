@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,7 +28,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "medical_event")
+@Table(name = "medical_event", schema = "administration")
 public class MedicalEvent {
 
 	@Id
@@ -34,36 +36,48 @@ public class MedicalEvent {
 	@Column(name = "id")
 	private Long id;
 
+	@NotEmpty
 	@Column(name = "sympthoms", nullable = false)
+	@Size(min = 10, max = 5000)
 	private String sympthoms;
 
+	@NotEmpty
+	@Size(min = 10, max = 5000)
 	@Column(name = "sympthoms_history")
 	private String sympthomsHistory;
 
+	@Size(min = 10, max = 5000)
 	@Column(name = "presumtive_diagnosis")
 	private String presumtiveDiagnosis;
 
+	@NotEmpty
+	@Size(min = 10, max = 5000)
 	@Column(name = "perforemed_medical_services", nullable = false)
 	private String perforemedMedicalServices;
 
+	@Size(min = 10, max = 5000)
 	@Column(name = "recommended_medical_services")
 	private String recommendedMedicalServices;
 
+	@Size(min = 10, max = 5000)
 	@Column(name = "recomanded_treatment")
 	private String recomandedTreatment;
 
-	@ManyToMany(targetEntity = Diagnostic.class, cascade = CascadeType.ALL)
-	private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
-
+	@NotEmpty
 	@Column(name = "disease_status")
 	private String diseaseStatus;
 
+	@NotEmpty
 	@Column(name = "event_status")
 	private String eventStatus;
 
+	@NotEmpty
 	@DateTimeFormat(pattern = "YYYY-MM-DD")
 	@Column(name = "event_date", nullable = false)
 	private LocalDate eventDate;
+
+	@ManyToMany(targetEntity = Diagnostic.class, cascade = CascadeType.ALL)
+	private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "clinic_id_fk")

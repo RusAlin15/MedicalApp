@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,7 +22,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "referral_ticket")
+@Table(name = "referral_ticket", schema = "administration")
 public class ReferralTicket {
 
 	@Id
@@ -28,9 +30,12 @@ public class ReferralTicket {
 	@Column(name = "id")
 	private Long id;
 
+	@NotEmpty
 	@Column(name = "description")
+	@Size(min = 10, max = 5000)
 	private String description;
 
+	@NotEmpty
 	@DateTimeFormat(pattern = "YYYY-MM-DD")
 	@Column(name = "result_date")
 	private LocalDate resultDate;

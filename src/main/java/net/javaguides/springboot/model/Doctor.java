@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -11,14 +13,10 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Doctor extends User {
+@Table(schema = "administration")
+public class Doctor extends Person {
 
-	@Column(name = "first_name", nullable = false)
-	private String firstName;
-
-	@Column(name = "last_name", nullable = false)
-	private String lastName;
-
+	@NotEmpty
 	@Column(name = "cuim", nullable = false, unique = true)
 	private String cuim;
 
@@ -34,28 +32,12 @@ public class Doctor extends User {
 		this.speciality = speciality;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
 	public String getCuim() {
 		return cuim;
 	}
 
 	public void setCuim(String cuim) {
 		this.cuim = cuim;
-	}
-
-	public String getFirstName() {
-		return firstName;
 	}
 
 }

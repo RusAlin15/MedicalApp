@@ -13,21 +13,17 @@ import net.javaguides.springboot.validator.CnpValidator;
 public class PatientService {
 	@Autowired
 	private PatientRepository patientRepository;
+	CnpValidator cnpValidator = new CnpValidator();
 
 	public Patient savePatient(Patient patient) {
+		String cnp = patient.getCnp();
+		cnpValidator.init(cnp);
 
-		// **
-		CnpValidator cnpValidator = new CnpValidator(patient.getCnp());
-
-		setPatientAtributes(patient, cnpValidator);
-
-		return patientRepository.save(patient);
-	}
-
-	private void setPatientAtributes(Patient patient, CnpValidator cnpValidator) {
 		patient.setAge(cnpValidator.getAge());
 		patient.setBirthDate(cnpValidator.getBirthDate());
 		patient.setGender(cnpValidator.getGender().toString());
+
+		return patientRepository.save(patient);
 	}
 
 	public List<Patient> getAllPatients() {

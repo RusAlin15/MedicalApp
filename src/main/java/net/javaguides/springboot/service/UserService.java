@@ -1,12 +1,18 @@
 package net.javaguides.springboot.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.javaguides.springboot.dto.UserDto;
+import net.javaguides.springboot.exception.InvalidDataException;
 import net.javaguides.springboot.model.User;
+import net.javaguides.springboot.repository.ClinicRepository;
+import net.javaguides.springboot.repository.DoctorRepository;
+import net.javaguides.springboot.repository.InstitutionRepository;
+import net.javaguides.springboot.repository.PatientRepository;
 import net.javaguides.springboot.repository.UserRepository;
 
 @Service
@@ -14,25 +20,44 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
-	private InstitutionService intitutionService;
+	private InstitutionRepository institutionRepository;
 	@Autowired
-	private ClinicService clinicService;
+	private PatientRepository patientRepository;
 	@Autowired
-	private PatientUserService patientUserService;
+	private DoctorRepository doctorRepository;
+	@Autowired
+	private ClinicRepository clinicRepository;
 
 	public User saveUser(User user) {
 		return userRepository.save(user);
 	}
 
-	// **
-	public List<User> getAllUsers() {
-		List<User> users = new ArrayList<User>();
+	public List<UserDto> getByType(String type) {
 
-		users.addAll(intitutionService.getRepository().findAll());
-		users.addAll(clinicService.getRepository().findAll());
-		users.addAll(patientUserService.getRepository().findAll());
-
-		return users;
+		switch (type) {
+		case "intitution": {
+			return institutionRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+		}
+		case "clinic": {
+			return clinicRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+		}
+		case "patient": {
+			return patientRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+		}
+		case "doctor": {
+			return doctorRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+		}
+		default:
+			throw new InvalidDataException("DataType", "type", type);
+		}
 	}
 
+	private UserDto convertToDto(User user) {
+		UserDto userDto = new UserDto();
+		userDto.setEmail(user.getEmail());
+		userDto.setId(user.getId());
+		userDto.setPhoneNumber(user.getPhoneNumber());
+
+		return userDto;
+	}
 }
