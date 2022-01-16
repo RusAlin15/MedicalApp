@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -16,7 +15,6 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "speciality", schema = "administration")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "specialityType", defaultImpl = Object.class)
 @JsonSubTypes({ @JsonSubTypes.Type(value = DentalSpeciality.class, name = "DentalSpeciality"),
 		@JsonSubTypes.Type(value = ClinicSpeciality.class, name = "ClinicSpeciality"),

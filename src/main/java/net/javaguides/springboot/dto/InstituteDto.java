@@ -1,27 +1,22 @@
-package net.javaguides.springboot.model;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+package net.javaguides.springboot.dto;
 
 import lombok.Data;
+import net.javaguides.springboot.model.Institute;
 
 @Data
-@Entity
-public abstract class Institute extends User {
-	@NotEmpty
-	@Size(min = 5)
-	@Column(name = "name", nullable = false, unique = true)
+public class InstituteDto extends UserDto {
 	private String name;
-
-	@Size(min = 10)
-	@Column(name = "address", nullable = true)
 	private String address;
-
-	@Size(min = 10)
-	@Column(name = "webSite", unique = true)
 	private String webSite;
+
+	public InstituteDto(Institute user) {
+		this.setId(user.getId());
+		this.name = user.getName();
+		this.address = user.getAddress();
+		this.setEmail(user.getEmail());
+		this.webSite = user.getWebSite();
+		this.setPhoneNumber(user.getPhoneNumber());
+	}
 
 	public String getName() {
 		return name;

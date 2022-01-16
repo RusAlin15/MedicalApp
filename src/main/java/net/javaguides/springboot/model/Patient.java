@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
@@ -21,7 +20,6 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(schema = "administration")
 public class Patient extends Person {
 
 	@NotEmpty

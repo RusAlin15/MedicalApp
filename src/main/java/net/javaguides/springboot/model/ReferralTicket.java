@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -22,7 +21,6 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "referral_ticket", schema = "administration")
 public class ReferralTicket {
 
 	@Id

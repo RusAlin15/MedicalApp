@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -16,17 +18,21 @@ import lombok.Data;
 
 @Data
 @MappedSuperclass
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "type", defaultImpl = Object.class)
-@JsonSubTypes({ @JsonSubTypes.Type(value = Patient.class, name = "Patient"),
-		@JsonSubTypes.Type(value = Doctor.class, name = "Doctor"),
+@Table(name = "account")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "userType", defaultImpl = Object.class)
+@JsonSubTypes({ @JsonSubTypes.Type(value = Clinic.class, name = "Clinic"),
 		@JsonSubTypes.Type(value = Institution.class, name = "Institution"),
-		@JsonSubTypes.Type(value = Clinic.class, name = "Clinic") })
+		@JsonSubTypes.Type(value = Patient.class, name = "Patient"),
+		@JsonSubTypes.Type(value = Doctor.class, name = "Doctor") })
 public abstract class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
+
+	@Transient
+	private String userType;
 
 	@NotEmpty
 	@Email
@@ -69,6 +75,14 @@ public abstract class User {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 }
