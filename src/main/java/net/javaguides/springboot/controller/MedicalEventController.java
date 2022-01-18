@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.javaguides.springboot.dto.MedicalEventDto;
 import net.javaguides.springboot.model.MedicalEvent;
 import net.javaguides.springboot.service.MedicalEventService;
 
@@ -22,17 +23,18 @@ public class MedicalEventController {
 	private MedicalEventService medicalEventService;
 
 	@PostMapping()
-	public ResponseEntity<MedicalEvent> saveMedicalEvent(@RequestBody MedicalEvent medicalEvent) {
-		return new ResponseEntity<MedicalEvent>(medicalEventService.saveMedicalEvent(medicalEvent), HttpStatus.CREATED);
+	public ResponseEntity<MedicalEventDto> saveMedicalEvent(@RequestBody MedicalEvent medicalEvent) {
+		return new ResponseEntity<MedicalEventDto>(medicalEventService.saveMedicalEvent(medicalEvent),
+				HttpStatus.CREATED);
 	}
 
 	@GetMapping
-	public List<MedicalEvent> getAllMedialEvents() {
+	public List<MedicalEventDto> getAllMedialEvents() {
 		return medicalEventService.getAllMedialEvents();
 	}
 
 	@GetMapping("{id}")
-	public ResponseEntity<MedicalEvent> getMedicalEventById(@PathVariable("id") long id) {
-		return new ResponseEntity<MedicalEvent>(medicalEventService.getMedicalEventById(id), HttpStatus.OK);
+	public ResponseEntity<MedicalEventDto> getMedicalEventById(@PathVariable("id") long id) {
+		return new ResponseEntity<MedicalEventDto>(medicalEventService.getMedicalEventById(id), HttpStatus.OK);
 	}
 }

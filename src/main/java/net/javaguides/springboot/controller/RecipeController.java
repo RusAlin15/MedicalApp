@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.javaguides.springboot.dto.RecipeDto;
 import net.javaguides.springboot.model.Recipe;
 import net.javaguides.springboot.service.RecipeService;
 
@@ -22,12 +23,12 @@ public class RecipeController {
 	private RecipeService recipeService;
 
 	@PostMapping
-	private ResponseEntity<Recipe> saveRecipe(@RequestBody Recipe recipe) {
-		return new ResponseEntity<Recipe>(recipeService.saveRecipe(recipe), HttpStatus.CREATED);
+	private ResponseEntity<RecipeDto> saveRecipe(@RequestBody Recipe recipe) {
+		return new ResponseEntity<RecipeDto>(recipeService.saveRecipe(recipe), HttpStatus.CREATED);
 	}
 
 	@GetMapping
-	private List<Recipe> getAllRecipes() {
+	private List<RecipeDto> getAllRecipes() {
 		return recipeService.getAllRecipes();
 	}
 }

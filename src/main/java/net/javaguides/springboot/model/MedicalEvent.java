@@ -75,7 +75,7 @@ public class MedicalEvent {
 	private LocalDate eventDate;
 
 	@ManyToMany(targetEntity = Diagnostic.class, cascade = CascadeType.ALL)
-	private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
+	private List<Diagnostic> diagnostics;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "clinic_id_fk")

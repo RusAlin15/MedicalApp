@@ -10,6 +10,7 @@ import net.javaguides.springboot.dto.InstituteDto;
 import net.javaguides.springboot.dto.PersonDto;
 import net.javaguides.springboot.dto.UserDto;
 import net.javaguides.springboot.exception.InvalidDataException;
+import net.javaguides.springboot.model.CnpData;
 import net.javaguides.springboot.model.Institute;
 import net.javaguides.springboot.model.Patient;
 import net.javaguides.springboot.model.Person;
@@ -19,8 +20,6 @@ import net.javaguides.springboot.repository.DoctorRepository;
 import net.javaguides.springboot.repository.InstitutionRepository;
 import net.javaguides.springboot.repository.PatientRepository;
 import net.javaguides.springboot.repository.UserRepository;
-import net.javaguides.springboot.validator.CnpData;
-import net.javaguides.springboot.validator.CnpDataService;
 
 @Service
 public class UserService {
@@ -35,14 +34,14 @@ public class UserService {
 	@Autowired
 	private ClinicRepository clinicRepository;
 
-	CnpDataService cnpExtractor = new CnpDataService();
+	CnpDataService cnpService = new CnpDataService();
 
 	public UserDto saveUser(User user) {
 		if (user instanceof Patient) {
 			Patient patientUser = (Patient) user;
 			String cnp = patientUser.getCnp();
 
-			CnpData cnpData = cnpExtractor.extract(cnp);
+			CnpData cnpData = cnpService.extract(cnp);
 
 			patientUser.setAge(cnpData.getAge());
 			patientUser.setBirthDate(cnpData.getBirthDate());
@@ -74,20 +73,18 @@ public class UserService {
 	}
 
 	private UserDto convertToDto(User user) {
-		UserDto userDto = new UserDto(user);
-
-		return userDto;
+		return new UserDto(user);
 	}
 
 	private UserDto convertToDto(Person user) {
-		PersonDto userDto = new PersonDto(user);
-
-		return userDto;
+		return new PersonDto(user);
 	}
 
 	private UserDto convertToDto(Institute user) {
-		InstituteDto userDto = new InstituteDto(user);
+		return new InstituteDto(user);
+	}
 
-		return userDto;
+	public UserDto getPatientByCnp(String cnp) {
+		return convertToDto(patientRepository.findByCnp(cnp));
 	}
 }

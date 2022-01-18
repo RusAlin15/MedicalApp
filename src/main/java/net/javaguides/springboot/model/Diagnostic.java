@@ -73,4 +73,8 @@ public class Diagnostic {
 		this.subDiagnostics.add(diagnostic);
 	}
 
+	public boolean getFinalDiagnostic() {
+		return finalDiagnostic;
+	}
+
 }

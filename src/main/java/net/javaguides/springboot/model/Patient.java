@@ -52,11 +52,6 @@ public class Patient extends Person {
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<LabScreening> labScreeningResults;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id_fk")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private List<Patient> patients;
-
 	public String getCnp() {
 		return cnp;
 	}

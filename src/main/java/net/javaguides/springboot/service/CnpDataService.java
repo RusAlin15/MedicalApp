@@ -1,4 +1,4 @@
-package net.javaguides.springboot.validator;
+package net.javaguides.springboot.service;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 
 import net.javaguides.springboot.enums.Gender;
 import net.javaguides.springboot.exception.InvalidDataException;
+import net.javaguides.springboot.model.CnpData;
 
 public class CnpDataService {
 	/** The standard length of a CNP. */
@@ -112,7 +113,6 @@ public class CnpDataService {
 	}
 
 	public CnpData extract(String cnp) {
-		CnpData cnpData = new CnpData();
 
 		isValidLength(cnp);
 		int[] cnpDigits = setCnpDigits(cnp);
@@ -121,12 +121,10 @@ public class CnpDataService {
 		isValidControlSum(cnpDigits);
 		isValidDistrict(cnpDigits);
 
-		cnpData.setGender(extractGender(cnpDigits));
-
+		Gender gender = extractGender(cnpDigits);
 		LocalDate birthDate = extractBirthDate(cnpDigits);
-		cnpData.setBirthDate(birthDate);
-		cnpData.setAge(extractAge(birthDate));
+		int age = extractAge(birthDate);
 
-		return cnpData;
+		return new CnpData(gender, birthDate, age);
 	}
 }

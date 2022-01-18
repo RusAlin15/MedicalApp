@@ -1,10 +1,12 @@
 package net.javaguides.springboot.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.javaguides.springboot.dto.MedicalEventDto;
 import net.javaguides.springboot.exception.ResourceNotFoundException;
 import net.javaguides.springboot.model.MedicalEvent;
 import net.javaguides.springboot.repository.MedicalEventRepository;
@@ -14,17 +16,21 @@ public class MedicalEventService {
 	@Autowired
 	private MedicalEventRepository medicalEventRepository;
 
-	public MedicalEvent saveMedicalEvent(MedicalEvent medicalEvent) {
-		return medicalEventRepository.save(medicalEvent);
+	public MedicalEventDto saveMedicalEvent(MedicalEvent medicalEvent) {
+		return convertToDto(medicalEventRepository.save(medicalEvent));
 	}
 
-	public List<MedicalEvent> getAllMedialEvents() {
-		return medicalEventRepository.findAll();
+	private MedicalEventDto convertToDto(MedicalEvent medicalEvent) {
+		return new MedicalEventDto(medicalEvent);
 	}
 
-	public MedicalEvent getMedicalEventById(long id) {
-		return medicalEventRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Medical Event", "Id", id));
+	public List<MedicalEventDto> getAllMedialEvents() {
+		return medicalEventRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+	}
+
+	public MedicalEventDto getMedicalEventById(long id) {
+		return convertToDto(medicalEventRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Medical Event", "Id", id)));
 	}
 
 }

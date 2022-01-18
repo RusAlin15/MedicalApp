@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.javaguides.springboot.dto.ReferralTicketDto;
 import net.javaguides.springboot.model.ReferralTicket;
 import net.javaguides.springboot.service.ReferralTicketService;
 
@@ -21,13 +22,13 @@ public class ReferralTicketController {
 	private ReferralTicketService referralTicketService;
 
 	@PostMapping
-	private ResponseEntity<ReferralTicket> saveReferralTicket(@RequestBody ReferralTicket referralTicket) {
-		return new ResponseEntity<ReferralTicket>(referralTicketService.saveReferralTicket(referralTicket),
+	private ResponseEntity<ReferralTicketDto> saveReferralTicket(@RequestBody ReferralTicket referralTicket) {
+		return new ResponseEntity<ReferralTicketDto>(referralTicketService.saveReferralTicket(referralTicket),
 				HttpStatus.CREATED);
 	}
 
 	@GetMapping
-	private List<ReferralTicket> getAllReferralTickets() {
+	private List<ReferralTicketDto> getAllReferralTickets() {
 		return referralTicketService.getAllReferralTickets();
 	}
 }

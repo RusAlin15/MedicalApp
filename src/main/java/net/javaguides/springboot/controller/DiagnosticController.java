@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.javaguides.springboot.dto.DiagnosticDto;
 import net.javaguides.springboot.model.Diagnostic;
 import net.javaguides.springboot.service.DiagnosticService;
 
@@ -25,19 +26,19 @@ public class DiagnosticController {
 	DiagnosticService diagnosticService;
 
 	@PostMapping
-	public ResponseEntity<Diagnostic> saveDiagnostic(@RequestBody Diagnostic diagnostic) {
-		return new ResponseEntity<Diagnostic>(diagnosticService.saveDiagnostic(diagnostic), HttpStatus.CREATED);
+	public ResponseEntity<DiagnosticDto> saveDiagnostic(@RequestBody Diagnostic diagnostic) {
+		return new ResponseEntity<DiagnosticDto>(diagnosticService.saveDiagnostic(diagnostic), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/{diagnosticId}")
-	public ResponseEntity<Diagnostic> saveDiagnostic(@RequestBody Diagnostic diagnostic,
+	public ResponseEntity<DiagnosticDto> saveDiagnostic(@RequestBody Diagnostic diagnostic,
 			@PathVariable String diagnosticId) {
-		return new ResponseEntity<Diagnostic>(diagnosticService.saveDiagnostic(diagnostic, diagnosticId),
+		return new ResponseEntity<DiagnosticDto>(diagnosticService.saveDiagnostic(diagnostic, diagnosticId),
 				HttpStatus.CREATED);
 	}
 
 	@GetMapping
-	public List<Diagnostic> getAllDiagnostics() {
+	public List<DiagnosticDto> getAllDiagnostics() {
 		return diagnosticService.getAllDiagnostics();
 	}
 

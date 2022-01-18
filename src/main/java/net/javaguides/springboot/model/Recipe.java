@@ -44,7 +44,8 @@ public class Recipe {
 		return id;
 	}
 
-//	@Column(name = "drugs")
-//	private Drugs id;
+	public String getDescription() {
+		return description;
+	}
 
 }

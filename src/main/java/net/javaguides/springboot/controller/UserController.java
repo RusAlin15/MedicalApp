@@ -35,4 +35,8 @@ public class UserController {
 		return userService.getByType(type);
 	}
 
+	@GetMapping("/patientBy/{cnp}")
+	public UserDto getPatientByCnp(@PathVariable String cnp) {
+		return userService.getPatientByCnp(cnp);
+	}
 }
