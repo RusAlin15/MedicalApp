@@ -19,7 +19,8 @@ import net.javaguides.springboot.repository.DoctorRepository;
 import net.javaguides.springboot.repository.InstitutionRepository;
 import net.javaguides.springboot.repository.PatientRepository;
 import net.javaguides.springboot.repository.UserRepository;
-import net.javaguides.springboot.validator.CnpValidator;
+import net.javaguides.springboot.validator.CnpData;
+import net.javaguides.springboot.validator.CnpDataService;
 
 @Service
 public class UserService {
@@ -34,22 +35,22 @@ public class UserService {
 	@Autowired
 	private ClinicRepository clinicRepository;
 
-	CnpValidator cnpValidator = new CnpValidator();
+	CnpDataService cnpExtractor = new CnpDataService();
 
-	public User saveUser(User user) {
+	public UserDto saveUser(User user) {
 		if (user instanceof Patient) {
 			Patient patientUser = (Patient) user;
 			String cnp = patientUser.getCnp();
-			cnpValidator.init(cnp);
 
-			patientUser.setAge(cnpValidator.getAge());
-			patientUser.setBirthDate(cnpValidator.getBirthDate());
-			patientUser.setGender(cnpValidator.getGender().toString());
+			CnpData cnpData = cnpExtractor.extract(cnp);
 
-			return userRepository.save(patientUser);
+			patientUser.setAge(cnpData.getAge());
+			patientUser.setBirthDate(cnpData.getBirthDate());
+			patientUser.setGender(cnpData.getGender().toString());
+
+			return convertToDto(userRepository.save(patientUser));
 		}
-
-		return userRepository.save(user);
+		return convertToDto(userRepository.save(user));
 	}
 
 	public List<UserDto> getByType(String type) {
@@ -70,6 +71,12 @@ public class UserService {
 		default:
 			throw new InvalidDataException("DataType", "type", type);
 		}
+	}
+
+	private UserDto convertToDto(User user) {
+		UserDto userDto = new UserDto(user);
+
+		return userDto;
 	}
 
 	private UserDto convertToDto(Person user) {

@@ -9,11 +9,9 @@ public class PersonDto extends UserDto {
 	private String lastName;
 
 	public PersonDto(Person user) {
-		this.setId(user.getId());
+		super(user);
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
-		this.setEmail(user.getEmail());
-		this.setPhoneNumber(user.getPhoneNumber());
 	}
 
 	public String getFirstName() {

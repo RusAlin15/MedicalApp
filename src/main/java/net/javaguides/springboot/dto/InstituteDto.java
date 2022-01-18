@@ -10,12 +10,11 @@ public class InstituteDto extends UserDto {
 	private String webSite;
 
 	public InstituteDto(Institute user) {
-		this.setId(user.getId());
+		super(user);
+
 		this.name = user.getName();
 		this.address = user.getAddress();
-		this.setEmail(user.getEmail());
 		this.webSite = user.getWebSite();
-		this.setPhoneNumber(user.getPhoneNumber());
 	}
 
 	public String getName() {

@@ -36,7 +36,7 @@ public abstract class User {
 
 	@NotEmpty
 	@Email
-	@Column(name = "email", nullable = false, unique = true)
+	@Column(name = "email", nullable = false)
 	private String email;
 
 	@NotEmpty

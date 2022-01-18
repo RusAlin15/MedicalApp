@@ -13,7 +13,7 @@ import net.javaguides.springboot.repository.DiagnosticRepository;
 @Service
 public class DiagnosticService {
 	@Autowired
-	DiagnosticRepository diagnosticRepository;
+	private DiagnosticRepository diagnosticRepository;
 
 	public Diagnostic saveDiagnostic(Diagnostic diagnostic) {
 		diagnostic.setFinalDiagnostic(false);

@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 import net.javaguides.springboot.enums.Gender;
 import net.javaguides.springboot.exception.InvalidDataException;
 
-public class CnpValidator {
+public class CnpDataService {
 	/** The standard length of a CNP. */
 	public static int LENGTH = 13;
 
@@ -19,25 +19,15 @@ public class CnpValidator {
 	private static Gender[] GENDER_OFFSET = new Gender[] { null, Gender.Male, Gender.Female, Gender.Male, Gender.Female,
 			Gender.Male, Gender.Female };
 
-	private String cnp;
-
-	private int[] cnpDigits;
-
-	private LocalDate birthDate;
-
-	private int age;
-
-	private Gender gender;
-
-	private int setAge() {
+	private int extractAge(LocalDate birthDate) {
 		return Period.between(birthDate, LocalDate.now()).getYears();
 	}
 
-	private Gender setGender() {
+	private Gender extractGender(int[] cnpDigits) {
 		return GENDER_OFFSET[cnpDigits[0]];
 	}
 
-	private int[] setCnpDigits() {
+	private int[] setCnpDigits(String cnp) {
 
 		int[] digits = new int[LENGTH];
 		for (int i = 0; i < LENGTH; i++) {
@@ -50,7 +40,7 @@ public class CnpValidator {
 		return digits;
 	}
 
-	private static int getControlSum(int[] twelveDigits) {
+	private static int extractControlSum(int[] twelveDigits) {
 		int k = 0;
 		for (int i = 0; i < 12; i++) {
 			k += CONTROL_VALUES[i] * twelveDigits[i];
@@ -62,7 +52,7 @@ public class CnpValidator {
 		return k;
 	}
 
-	public LocalDate setBirthDate() {
+	public LocalDate extractBirthDate(int[] cnpDigits) {
 
 		int month = cnpDigits[3] * 10 + cnpDigits[4];
 
@@ -70,75 +60,73 @@ public class CnpValidator {
 
 		int year = YEAR_OFFSET[cnpDigits[0]] + cnpDigits[1] * 10 + cnpDigits[2];
 
-		isValidDate(month, dayOfMonth, year);
+		if (!isValidDate(month, dayOfMonth, year))
+			throw new InvalidDataException("Account", "CNP", cnpDigits.toString());
 
 		return LocalDate.of(year, month, dayOfMonth);
 	}
 
-	private void isValidDistrict() {
+	private boolean isValidDistrict(int[] cnpDigits) {
 		int jj = cnpDigits[7] * 10 + cnpDigits[8];
 		if (jj < 1 || jj > 52 || jj == 49 || jj == 50) {
-			throw new InvalidDataException("Account", "CNP", cnp);
+			return false;
 		}
+		return true;
 	}
 
-	private void isValidDate(int month, int dayOfMonth, int year) {
+	private boolean isValidDate(int month, int dayOfMonth, int year) {
 		if (dayOfMonth < 1 && dayOfMonth > 31) {
-			throw new InvalidDataException("Account", "CNP", cnp);
+			return false;
 		}
 
 		if (month < 1 && month > 12) {
-			throw new InvalidDataException("Account", "CNP", cnp);
+			return false;
 		}
 
 		int maxDayOfMonth = new GregorianCalendar(year, month, dayOfMonth).getActualMaximum(Calendar.DAY_OF_MONTH);
 		if (dayOfMonth > maxDayOfMonth) {
-			throw new InvalidDataException("Account", "CNP", cnp);
+			return false;
 		}
+		return true;
 	}
 
-	private void isValidLength() {
+	private void isValidLength(String cnp) {
 		if (cnp.length() != LENGTH) {
 			throw new InvalidDataException("Account", "CNP", cnp);
 		}
 	}
 
-	private void isValidControlSum() {
-		if (cnpDigits[LENGTH - 1] != getControlSum(cnpDigits)) {
-			throw new InvalidDataException("Account", "CNP", cnp);
+	private boolean isValidControlSum(int[] cnpDigits) {
+		if (cnpDigits[LENGTH - 1] != extractControlSum(cnpDigits)) {
+			throw new InvalidDataException("Account", "CNP", cnpDigits.toString());
 		}
+		return true;
 	}
 
-	private void isValidGender() {
+	private boolean isValidGender(int[] cnpDigits) {
 		if (cnpDigits[0] < 1 || cnpDigits[0] > 6) {
-			throw new InvalidDataException("Account", "CNP", cnp);
+			throw new InvalidDataException("Account", "CNP", cnpDigits.toString());
 		}
+		return true;
 
 	}
 
-	public LocalDate getBirthDate() {
-		return birthDate;
-	}
+	public CnpData extract(String cnp) {
+		CnpData cnpData = new CnpData();
 
-	public int getAge() {
-		return age;
-	}
+		isValidLength(cnp);
+		int[] cnpDigits = setCnpDigits(cnp);
 
-	public Gender getGender() {
-		return gender;
-	}
+		isValidGender(cnpDigits);
+		isValidControlSum(cnpDigits);
+		isValidDistrict(cnpDigits);
 
-	public void init(String cnp) {
-		this.cnp = cnp;
-		isValidLength();
-		this.cnpDigits = setCnpDigits();
+		cnpData.setGender(extractGender(cnpDigits));
 
-		isValidGender();
-		isValidControlSum();
-		isValidDistrict();
+		LocalDate birthDate = extractBirthDate(cnpDigits);
+		cnpData.setBirthDate(birthDate);
+		cnpData.setAge(extractAge(birthDate));
 
-		this.gender = setGender();
-		this.birthDate = setBirthDate();
-		this.age = setAge();
+		return cnpData;
 	}
 }
