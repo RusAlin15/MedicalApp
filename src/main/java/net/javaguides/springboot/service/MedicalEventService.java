@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.javaguides.springboot.dto.MedicalEventDto;
+import net.javaguides.springboot.enums.DiseaseStatus;
+import net.javaguides.springboot.enums.EventStatus;
 import net.javaguides.springboot.exception.ResourceNotFoundException;
 import net.javaguides.springboot.model.MedicalEvent;
 import net.javaguides.springboot.repository.MedicalEventRepository;
@@ -17,6 +19,8 @@ public class MedicalEventService {
 	private MedicalEventRepository medicalEventRepository;
 
 	public MedicalEventDto saveMedicalEvent(MedicalEvent medicalEvent) {
+		medicalEvent.setDiseaseStatus(DiseaseStatus.valueOf(medicalEvent.getDiseaseStatus()).toString());
+		medicalEvent.setEventStatus(EventStatus.valueOf(medicalEvent.getEventStatus()).toString());
 		return convertToDto(medicalEventRepository.save(medicalEvent));
 	}
 

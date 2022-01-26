@@ -1,7 +1,6 @@
 package net.javaguides.springboot.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -39,7 +38,6 @@ public class MedicalEvent {
 	@Size(min = 10, max = 5000)
 	private String sympthoms;
 
-	@NotEmpty
 	@Size(min = 10, max = 5000)
 	@Column(name = "sympthoms_history")
 	private String sympthomsHistory;
@@ -69,7 +67,6 @@ public class MedicalEvent {
 	@Column(name = "event_status")
 	private String eventStatus;
 
-	@NotEmpty
 	@DateTimeFormat(pattern = "YYYY-MM-DD")
 	@Column(name = "event_date", nullable = false)
 	private LocalDate eventDate;
