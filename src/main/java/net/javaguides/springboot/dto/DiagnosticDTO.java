@@ -1,29 +1,33 @@
 package net.javaguides.springboot.dto;
 
-import net.javaguides.springboot.model.Diagnostic;
-
-public class DiagnosticDto {
+public class DiagnosticDTO {
 
 	private String icdCode;
 	private String titleName;
 	private boolean finalDiagnostic;
 
-	public DiagnosticDto(Diagnostic diagnostic) {
-		this.icdCode = diagnostic.getIcdCode();
-		this.titleName = diagnostic.getTitleName();
-		this.finalDiagnostic = diagnostic.getFinalDiagnostic();
-	}
-
 	public String getIcdCode() {
 		return icdCode;
+	}
+
+	public void setIcdCode(String icdCode) {
+		this.icdCode = icdCode;
 	}
 
 	public String getTitleName() {
 		return titleName;
 	}
 
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
 	public boolean isFinalDiagnostic() {
 		return finalDiagnostic;
+	}
+
+	public void setFinalDiagnostic(boolean finalDiagnostic) {
+		this.finalDiagnostic = finalDiagnostic;
 	}
 
 }

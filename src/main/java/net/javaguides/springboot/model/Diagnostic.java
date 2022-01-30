@@ -53,6 +53,14 @@ public class Diagnostic {
 		this.finalDiagnostic = finalDiagnostic;
 	}
 
+	public String getIcdCode() {
+		return icdCode;
+	}
+
+	public void setIcdCode(String icdCode) {
+		this.icdCode = icdCode;
+	}
+
 	public String getTitleName() {
 		return titleName;
 	}
@@ -61,20 +69,12 @@ public class Diagnostic {
 		this.titleName = titleName;
 	}
 
-	public String getIcdCode() {
-		return icdCode;
-	}
-
 	public List<Diagnostic> getSubDiagnostics() {
 		return subDiagnostics;
 	}
 
-	public void addSubDiagnostics(Diagnostic diagnostic) {
-		this.subDiagnostics.add(diagnostic);
-	}
-
-	public boolean getFinalDiagnostic() {
-		return finalDiagnostic;
+	public void setSubDiagnostics(List<Diagnostic> subDiagnostics) {
+		this.subDiagnostics = subDiagnostics;
 	}
 
 }

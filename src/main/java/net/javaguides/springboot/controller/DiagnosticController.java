@@ -15,30 +15,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.javaguides.springboot.dto.DiagnosticDto;
+import net.javaguides.springboot.dto.DiagnosticDTO;
+import net.javaguides.springboot.dto.mapper.DiagnosticMapper;
 import net.javaguides.springboot.model.Diagnostic;
 import net.javaguides.springboot.service.DiagnosticService;
 
 @RestController
 @RequestMapping("api/diagnostic")
 public class DiagnosticController {
+
 	@Autowired
 	DiagnosticService diagnosticService;
 
+	@Autowired
+	DiagnosticMapper diagnosticMapper;
+
 	@PostMapping
-	public ResponseEntity<DiagnosticDto> saveDiagnostic(@RequestBody Diagnostic diagnostic) {
-		return new ResponseEntity<DiagnosticDto>(diagnosticService.saveDiagnostic(diagnostic), HttpStatus.CREATED);
+	public ResponseEntity<DiagnosticDTO> createDiagnostic(@RequestBody DiagnosticDTO diagnosticDTO) {
+		Diagnostic diagnostic = diagnosticMapper.diagnosticDTO2diagnostic(diagnosticDTO);
+		diagnosticDTO = diagnosticMapper.diagnostic2diagnosticDTO(diagnosticService.createDiagnostic(diagnostic));
+		return new ResponseEntity<DiagnosticDTO>(diagnosticDTO, HttpStatus.CREATED);
 	}
 
 	@PostMapping("/{diagnosticId}")
-	public ResponseEntity<DiagnosticDto> saveDiagnostic(@RequestBody Diagnostic diagnostic,
+	public ResponseEntity<DiagnosticDTO> saveDiagnostic(@RequestBody Diagnostic diagnostic,
 			@PathVariable String diagnosticId) {
-		return new ResponseEntity<DiagnosticDto>(diagnosticService.saveDiagnostic(diagnostic, diagnosticId),
+		return new ResponseEntity<DiagnosticDTO>(diagnosticService.saveDiagnostic(diagnostic, diagnosticId),
 				HttpStatus.CREATED);
 	}
 
 	@GetMapping
-	public List<DiagnosticDto> getAllDiagnostics() {
+	public List<DiagnosticDTO> getAllDiagnostics() {
 		return diagnosticService.getAllDiagnostics();
 	}
 
