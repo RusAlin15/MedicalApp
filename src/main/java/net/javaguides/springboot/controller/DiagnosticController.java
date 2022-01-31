@@ -11,49 +11,60 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.javaguides.springboot.dto.DiagnosticDTO;
-import net.javaguides.springboot.dto.mapper.DiagnosticMapper;
-import net.javaguides.springboot.model.Diagnostic;
-import net.javaguides.springboot.service.DiagnosticService;
+import net.javaguides.springboot.facade.DiagnosticFacade;
 
 @RestController
-@RequestMapping("api/diagnostic")
+@RequestMapping("diagnostic")
 public class DiagnosticController {
-
 	@Autowired
-	DiagnosticService diagnosticService;
-
-	@Autowired
-	DiagnosticMapper diagnosticMapper;
+	private DiagnosticFacade diagnosticFacade;
 
 	@PostMapping
-	public ResponseEntity<DiagnosticDTO> createDiagnostic(@RequestBody DiagnosticDTO diagnosticDTO) {
-		Diagnostic diagnostic = diagnosticMapper.diagnosticDTO2diagnostic(diagnosticDTO);
-		diagnosticDTO = diagnosticMapper.diagnostic2diagnosticDTO(diagnosticService.createDiagnostic(diagnostic));
-		return new ResponseEntity<DiagnosticDTO>(diagnosticDTO, HttpStatus.CREATED);
+	public ResponseEntity<DiagnosticDTO> saveDiagnostic(@RequestBody DiagnosticDTO diagnosticDTO) {
+		return new ResponseEntity<DiagnosticDTO>(diagnosticFacade.saveDiagnostic(diagnosticDTO), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/{diagnosticId}")
-	public ResponseEntity<DiagnosticDTO> saveDiagnostic(@RequestBody Diagnostic diagnostic,
+	public ResponseEntity<DiagnosticDTO> saveDiagnostic(@RequestBody DiagnosticDTO diagnosticDTO,
 			@PathVariable String diagnosticId) {
-		return new ResponseEntity<DiagnosticDTO>(diagnosticService.saveDiagnostic(diagnostic, diagnosticId),
+		return new ResponseEntity<DiagnosticDTO>(diagnosticFacade.saveDiagnostic(diagnosticDTO, diagnosticId),
 				HttpStatus.CREATED);
 	}
 
+	@PutMapping("/{diagnosticId")
+	public ResponseEntity<DiagnosticDTO> updateDiagnostic(@PathVariable("diagnosticID") String diagnosticId,
+			@RequestBody DiagnosticDTO diagnosticDTO) {
+		return new ResponseEntity<DiagnosticDTO>(diagnosticFacade.updateDiagnostic(diagnosticId, diagnosticDTO),
+				HttpStatus.OK);
+	}
+
+	@GetMapping("/{diagnosticId}")
+	public ResponseEntity<DiagnosticDTO> getDiagnosticById(@RequestBody String diagnosticId) {
+		return new ResponseEntity<DiagnosticDTO>(diagnosticFacade.getDiagnosticById(diagnosticId), HttpStatus.OK);
+	}
+
 	@GetMapping
-	public List<DiagnosticDTO> getAllDiagnostics() {
-		return diagnosticService.getAllDiagnostics();
+	public ResponseEntity<List<DiagnosticDTO>> getAllDiagnostics() {
+		return new ResponseEntity<List<DiagnosticDTO>>(diagnosticFacade.getAllDiagnostics(), HttpStatus.OK);
+	}
+
+	@DeleteMapping
+	public ResponseEntity<String> deleteDiagnosticById(@RequestBody String diagnosticId) {
+		diagnosticFacade.deleteDiagnosticById(diagnosticId);
+		return new ResponseEntity<String>("Diagnostic successfuly deleted!", HttpStatus.OK);
 	}
 
 	@Transactional
-	@DeleteMapping()
+	@DeleteMapping
 	public ResponseEntity<String> deleteAllDiagnostics() {
-		diagnosticService.deleteAllDiagnostics();
-		return new ResponseEntity<String>("Diagnostics deleted successfuly!", HttpStatus.OK);
+		diagnosticFacade.deleteAllDiagnostics();
+		return new ResponseEntity<String>("Diagnostic successfuly deleted!", HttpStatus.OK);
 	}
 
 }

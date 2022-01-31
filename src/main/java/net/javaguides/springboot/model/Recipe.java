@@ -32,20 +32,28 @@ public class Recipe {
 	@Column(name = "purchase_date")
 	private LocalDate purchasedDate;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public LocalDate getPurchasedDate() {
 		return purchasedDate;
 	}
 
 	public void setPurchasedDate(LocalDate purchasedDate) {
 		this.purchasedDate = purchasedDate;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getDescription() {
-		return description;
 	}
 
 }

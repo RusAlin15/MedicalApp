@@ -1,15 +1,8 @@
 package net.javaguides.springboot.dto;
 
-import net.javaguides.springboot.model.Recipe;
-
-public class RecipeDto {
+public class RecipeDTO {
 	private Long id;
 	private String description;
-
-	public RecipeDto(Recipe recipe) {
-		this.id = recipe.getId();
-		this.description = recipe.getDescription();
-	}
 
 	public Long getId() {
 		return id;
@@ -17,6 +10,14 @@ public class RecipeDto {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

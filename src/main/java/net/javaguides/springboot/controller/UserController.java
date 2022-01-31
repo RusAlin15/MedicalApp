@@ -3,16 +3,20 @@ package net.javaguides.springboot.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import net.javaguides.springboot.dto.UserDto;
+import net.javaguides.springboot.dto.UserDTO;
 import net.javaguides.springboot.model.Patient;
 import net.javaguides.springboot.model.User;
 import net.javaguides.springboot.service.UserService;
@@ -24,15 +28,9 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-//	@PostMapping
-//	public ResponseEntity<UserDto> saveUser(@Valid @RequestBody User user) {
-//		return new ResponseEntity<UserDto>(userService.saveUser(user), HttpStatus.CREATED);
-//	}
-
 	@PostMapping
-	public String saveUser(@ModelAttribute("user") User user) {
-		userService.saveUser(user);
-		return "redirect:/users";
+	public ResponseEntity<UserDTO> saveUser(@Valid @RequestBody User user) {
+		return new ResponseEntity<UserDTO>(userService.saveUser(user), HttpStatus.CREATED);
 	}
 
 	@GetMapping("/users/new")
@@ -44,12 +42,12 @@ public class UserController {
 	}
 
 	@GetMapping("/{type}")
-	public List<UserDto> getByType(@PathVariable String type) {
+	public List<UserDTO> getByType(@PathVariable String type) {
 		return userService.getByType(type);
 	}
 
 	@GetMapping("/patientBy/{cnp}")
-	public UserDto getPatientByCnp(@PathVariable String cnp) {
+	public UserDTO getPatientByCnp(@PathVariable String cnp) {
 		return userService.getPatientByCnp(cnp);
 	}
 
@@ -61,7 +59,7 @@ public class UserController {
 
 	@GetMapping("/persons")
 	public String listPersons(Model model) {
-		List<UserDto> users = new ArrayList<>();
+		List<UserDTO> users = new ArrayList<>();
 		users.addAll(userService.getByType("doctor"));
 		users.addAll(userService.getByType("patient"));
 		model.addAttribute("persons", users);

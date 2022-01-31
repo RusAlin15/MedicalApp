@@ -77,4 +77,8 @@ public class Diagnostic {
 		this.subDiagnostics = subDiagnostics;
 	}
 
+	public void addSubDiagnostics(Diagnostic diagnostic) {
+		this.subDiagnostics.add(diagnostic);
+	}
+
 }

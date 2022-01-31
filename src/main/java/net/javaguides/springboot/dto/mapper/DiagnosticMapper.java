@@ -1,5 +1,8 @@
 package net.javaguides.springboot.dto.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import net.javaguides.springboot.dto.DiagnosticDTO;
@@ -22,6 +25,10 @@ public class DiagnosticMapper {
 		diagnosticDTO.setTitleName(diagnostic.getTitleName());
 		diagnosticDTO.setFinalDiagnostic(diagnostic.isFinalDiagnostic());
 		return diagnosticDTO;
+	}
+
+	public List<DiagnosticDTO> diagnosticList2DiagnosticDTOList(List<Diagnostic> allDiagnostics) {
+		return allDiagnostics.stream().map(this::diagnostic2diagnosticDTO).collect(Collectors.toList());
 	}
 
 }

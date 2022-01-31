@@ -43,6 +43,14 @@ public class ReferralTicket {
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private MedicalEvent medicalEvent;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -59,7 +67,12 @@ public class ReferralTicket {
 		this.resultDate = resultDate;
 	}
 
-	public Long getId() {
-		return id;
+	public MedicalEvent getMedicalEvent() {
+		return medicalEvent;
 	}
+
+	public void setMedicalEvent(MedicalEvent medicalEvent) {
+		this.medicalEvent = medicalEvent;
+	}
+
 }

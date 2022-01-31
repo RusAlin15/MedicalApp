@@ -4,11 +4,11 @@ import lombok.Data;
 import net.javaguides.springboot.model.Person;
 
 @Data
-public class PersonDto extends UserDto {
+public class PersonDTO extends UserDTO {
 	private String firstName;
 	private String lastName;
 
-	public PersonDto(Person user) {
+	public PersonDTO(Person user) {
 		super(user);
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();

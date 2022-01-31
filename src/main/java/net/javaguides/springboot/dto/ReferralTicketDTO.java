@@ -3,30 +3,35 @@ package net.javaguides.springboot.dto;
 import java.time.LocalDate;
 
 import lombok.Data;
-import net.javaguides.springboot.model.ReferralTicket;
 
 @Data
-public class ReferralTicketDto {
+public class ReferralTicketDTO {
 	private Long id;
 	private String description;
 	private LocalDate resultDate;
 
-	public ReferralTicketDto(ReferralTicket referalTichet) {
-		this.id = referalTichet.getId();
-		this.description = referalTichet.getDescription();
-		this.resultDate = referalTichet.getResultDate();
-	}
-
 	public Long getId() {
 		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public LocalDate getResultDate() {
 		return resultDate;
+	}
+
+	public void setResultDate(LocalDate resultDate) {
+		this.resultDate = resultDate;
 	}
 
 }

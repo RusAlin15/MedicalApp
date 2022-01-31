@@ -1,12 +1,10 @@
 package net.javaguides.springboot.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.javaguides.springboot.dto.DiagnosticDTO;
 import net.javaguides.springboot.exception.InvalidDataException;
 import net.javaguides.springboot.exception.ResourceNotFoundException;
 import net.javaguides.springboot.model.Diagnostic;
@@ -17,28 +15,47 @@ public class DiagnosticService {
 	@Autowired
 	private DiagnosticRepository diagnosticRepository;
 
-	public Diagnostic createDiagnostic(Diagnostic diagnostic) {
+	public Diagnostic saveDiagnostic(Diagnostic diagnostic) {
 		diagnostic.setFinalDiagnostic(false);
 		return diagnosticRepository.save(diagnostic);
 	}
 
-	public DiagnosticDTO saveDiagnostic(Diagnostic diagnostic, String diagnosticId) {
+	public Diagnostic saveDiagnostic(Diagnostic diagnostic, String diagnosticId) {
 		Diagnostic diagnosticCap = diagnosticRepository.findById(diagnosticId)
 				.orElseThrow(() -> new ResourceNotFoundException("Diagnostic", "Id", diagnosticId));
 		if (!diagnosticCap.equals(diagnostic)) {
 			diagnosticCap.addSubDiagnostics(diagnostic);
 		} else {
-			throw new InvalidDataException("SameData", "Id", diagnosticId);
+			throw new InvalidDataException("Existing already ", "Id", diagnosticId);
 		}
-		return convertToDto(diagnosticRepository.save(diagnostic));
+		return diagnosticRepository.save(diagnostic);
 	}
 
-	public List<DiagnosticDTO> getAllDiagnostics() {
-		return diagnosticRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+	public Diagnostic updateDiagnostic(String diagnosticId, Diagnostic diagnostic) {
+		Diagnostic diagnostic2Update = getDiagnosticById(diagnosticId);
+
+		diagnostic2Update.setIcdCode(diagnostic.getIcdCode());
+		diagnostic2Update.setTitleName(diagnostic.getTitleName());
+		diagnostic2Update.setSubDiagnostics(diagnostic.getSubDiagnostics());
+		diagnostic2Update.setFinalDiagnostic(diagnostic.isFinalDiagnostic());
+		return diagnosticRepository.saveAndFlush(diagnostic2Update);
+	}
+
+	public Diagnostic getDiagnosticById(String diagnosticId) {
+		return diagnosticRepository.findById(diagnosticId)
+				.orElseThrow(() -> new ResourceNotFoundException("Diagnostic", "Id", diagnosticId));
+	}
+
+	public List<Diagnostic> getAllDiagnostics() {
+		return diagnosticRepository.findAll();
+	}
+
+	public void deleteDiagnosticById(String diagnosticId) {
+		diagnosticRepository.deleteById(diagnosticId);
 	}
 
 	public void deleteAllDiagnostics() {
 		diagnosticRepository.deleteAll();
-	};
+	}
 
 }

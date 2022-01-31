@@ -237,4 +237,24 @@ public class MedicalEvent {
 		this.patient = patient;
 	}
 
+	public List<MedicalEvent> getSubMedicalEvents() {
+		return subMedicalEvents;
+	}
+
+	public void setSubMedicalEvents(List<MedicalEvent> subMedicalEvents) {
+		this.subMedicalEvents = subMedicalEvents;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setDiagnostics(List<Diagnostic> diagnostics) {
+		this.diagnostics = diagnostics;
+	}
+
+	public void setReferralTickets(List<ReferralTicket> referralTickets) {
+		this.referralTickets = referralTickets;
+	}
+
 }

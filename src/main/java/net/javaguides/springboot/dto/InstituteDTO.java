@@ -4,12 +4,12 @@ import lombok.Data;
 import net.javaguides.springboot.model.Institute;
 
 @Data
-public class InstituteDto extends UserDto {
+public class InstituteDTO extends UserDTO {
 	private String name;
 	private String address;
 	private String webSite;
 
-	public InstituteDto(Institute user) {
+	public InstituteDTO(Institute user) {
 		super(user);
 
 		this.name = user.getName();

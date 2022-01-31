@@ -1,19 +1,13 @@
 package net.javaguides.springboot.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.javaguides.springboot.dto.InstituteDto;
-import net.javaguides.springboot.dto.PersonDto;
-import net.javaguides.springboot.dto.UserDto;
 import net.javaguides.springboot.exception.InvalidDataException;
 import net.javaguides.springboot.model.CnpData;
-import net.javaguides.springboot.model.Institute;
 import net.javaguides.springboot.model.Patient;
-import net.javaguides.springboot.model.Person;
 import net.javaguides.springboot.model.User;
 import net.javaguides.springboot.repository.ClinicRepository;
 import net.javaguides.springboot.repository.DoctorRepository;
@@ -40,21 +34,20 @@ public class UserService {
 
 	private CnpDataService cnpService = new CnpDataService();
 
-	public UserDto saveUser(User user) {
+	public User saveUser(User user) {
 		if (user instanceof Patient) {
-			Patient patientUser = (Patient) user;
 
-			String cnp = patientUser.getCnp();
+			String cnp = ((Patient) user).getCnp();
 			int[] cnpDigits = extractCnpDigits(cnp);
 
 			CnpValidator cnpValidator = new CnpValidator();
 			cnpValidator.isValid(cnpDigits);
 
-			setPatientProperties(patientUser, cnpDigits);
+			setPatientProperties(((Patient) user), cnpDigits);
 
-			return convertToDto(userRepository.save(patientUser));
+			return userRepository.save(user);
 		}
-		return convertToDto(userRepository.save(user));
+		return userRepository.save(user);
 	}
 
 	private void setPatientProperties(Patient patientUser, int[] cnpDigits) {
@@ -78,39 +71,27 @@ public class UserService {
 		return digits;
 	}
 
-	public List<UserDto> getByType(String type) {
+	public List<User> getByType(String type) {
 
 		switch (type) {
 		case "institution": {
-			return institutionRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+			return institutionRepository.findAll();
 		}
 		case "clinic": {
-			return clinicRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+			return clinicRepository.findAll();
 		}
 		case "patient": {
-			return patientRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+			return patientRepository.findAll();
 		}
 		case "doctor": {
-			return doctorRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+			return doctorRepository.findAll();
 		}
 		default:
 			throw new InvalidDataException("DataType", "type", type);
 		}
 	}
 
-	private UserDto convertToDto(User user) {
-		return new UserDto(user);
-	}
-
-	private UserDto convertToDto(Person user) {
-		return new PersonDto(user);
-	}
-
-	private UserDto convertToDto(Institute user) {
-		return new InstituteDto(user);
-	}
-
-	public UserDto getPatientByCnp(String cnp) {
-		return convertToDto(patientRepository.findByCnp(cnp));
+	public User getPatientByCnp(String cnp) {
+		return patientRepository.findByCnp(cnp);
 	}
 }

@@ -4,11 +4,11 @@ import lombok.Data;
 import net.javaguides.springboot.model.Speciality;
 
 @Data
-public class SpecialityDto {
+public class SpecialityDTO {
 	private Long id;
 	private String specialityName;
 
-	public SpecialityDto(Speciality speciality) {
+	public SpecialityDTO(Speciality speciality) {
 		this.id = speciality.getId();
 		this.specialityName = speciality.getSpecialityName();
 	}
