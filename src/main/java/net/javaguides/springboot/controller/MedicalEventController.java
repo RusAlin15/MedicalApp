@@ -48,7 +48,7 @@ public class MedicalEventController {
 	}
 
 	@Transactional
-	@DeleteMapping
+	@DeleteMapping("{eventId}")
 	public ResponseEntity<String> deleteEventById(@PathVariable("eventId") long eventId) {
 		eventFacade.deleteEventById(eventId);
 		return new ResponseEntity<String>("Medical events successfuly deleted!", HttpStatus.OK);

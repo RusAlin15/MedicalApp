@@ -13,7 +13,6 @@ import net.javaguides.springboot.repository.ClinicRepository;
 import net.javaguides.springboot.repository.DoctorRepository;
 import net.javaguides.springboot.repository.InstitutionRepository;
 import net.javaguides.springboot.repository.PatientRepository;
-import net.javaguides.springboot.repository.PersonRepository;
 import net.javaguides.springboot.repository.UserRepository;
 import net.javaguides.springboot.validator.CnpValidator;
 
@@ -29,8 +28,6 @@ public class UserService {
 	private DoctorRepository doctorRepository;
 	@Autowired
 	private ClinicRepository clinicRepository;
-	@Autowired
-	private PersonRepository personRepository;
 
 	private CnpDataService cnpService = new CnpDataService();
 

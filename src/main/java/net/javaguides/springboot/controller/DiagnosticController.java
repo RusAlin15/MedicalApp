@@ -54,7 +54,8 @@ public class DiagnosticController {
 		return new ResponseEntity<List<DiagnosticDTO>>(diagnosticFacade.getAllDiagnostics(), HttpStatus.OK);
 	}
 
-	@DeleteMapping
+	@Transactional
+	@DeleteMapping("/{diagnosticId}")
 	public ResponseEntity<String> deleteDiagnosticById(@RequestBody String diagnosticId) {
 		diagnosticFacade.deleteDiagnosticById(diagnosticId);
 		return new ResponseEntity<String>("Diagnostic successfuly deleted!", HttpStatus.OK);

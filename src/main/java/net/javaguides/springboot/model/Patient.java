@@ -96,4 +96,16 @@ public class Patient extends Person {
 		return labScreeningResults;
 	}
 
+	public void setMedicalEvents(List<MedicalEvent> medicalEvents) {
+		this.medicalEvents = medicalEvents;
+	}
+
+	public void setLabAnalysisResults(List<LabAnalyse> labAnalysisResults) {
+		this.labAnalysisResults = labAnalysisResults;
+	}
+
+	public void setLabScreeningResults(List<LabScreening> labScreeningResults) {
+		this.labScreeningResults = labScreeningResults;
+	}
+
 }

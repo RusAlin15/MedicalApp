@@ -37,4 +37,12 @@ public class ReferralTicketService {
 		return ticketRepository.findAll();
 	}
 
+	public void deleteTicketById(long ticketId) {
+		ticketRepository.deleteById(ticketId);
+	}
+
+	public void deleteAllTickets() {
+		ticketRepository.deleteAll();
+	}
+
 }

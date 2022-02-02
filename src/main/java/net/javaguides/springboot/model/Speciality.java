@@ -31,16 +31,20 @@ public abstract class Speciality {
 	@Column(name = "speciality_name", nullable = false, unique = true)
 	private String specialityName;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getSpecialityName() {
 		return specialityName;
 	}
 
 	public void setSpecialityName(String specialityName) {
 		this.specialityName = specialityName;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 }

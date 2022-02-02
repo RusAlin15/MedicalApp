@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,18 @@ public class ReferralTicketController {
 	@GetMapping
 	public ResponseEntity<List<ReferralTicketDTO>> getAllTickets() {
 		return new ResponseEntity<List<ReferralTicketDTO>>(ticketFacade.getAllTickets(), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{ticketId}")
+	public ResponseEntity<String> deleteTicketById(@PathVariable("ticketId") long ticketId) {
+		ticketFacade.deleteTicketById(ticketId);
+		return new ResponseEntity<String>("Referral Ticket succesfuly deleted!", HttpStatus.OK);
+	}
+
+	@DeleteMapping()
+	public ResponseEntity<String> deleteAllTickets() {
+		ticketFacade.deleteAllTickets();
+		return new ResponseEntity<String>("All Referral Tickets succesfuly deleted!", HttpStatus.OK);
 	}
 
 }

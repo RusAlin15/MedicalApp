@@ -1,19 +1,13 @@
 package net.javaguides.springboot.dto;
 
 import lombok.Data;
-import net.javaguides.springboot.model.User;
 
 @Data
 public class UserDTO {
 	private Long Id;
 	private String email;
 	private String phoneNumber;
-
-	public UserDTO(User user) {
-		this.Id = user.getId();
-		this.email = user.getEmail();
-		this.phoneNumber = user.getPhoneNumber();
-	}
+	private String password;
 
 	public Long getId() {
 		return Id;
@@ -37,6 +31,14 @@ public class UserDTO {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public String getPassword() {
+		return null;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

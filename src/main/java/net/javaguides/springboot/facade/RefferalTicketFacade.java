@@ -36,4 +36,12 @@ public class RefferalTicketFacade {
 		return ticketMapper.ticketList2TicketListDTO(ticketService.getAllTickets());
 	}
 
+	public void deleteTicketById(long ticketId) {
+		ticketService.deleteTicketById(ticketId);
+	}
+
+	public void deleteAllTickets() {
+		ticketService.deleteAllTickets();
+	}
+
 }
